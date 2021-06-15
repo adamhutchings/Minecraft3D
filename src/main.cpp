@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
+#include <graphics/mesh.hpp>
 #include <graphics/shader.hpp>
 
 int main() {
@@ -23,10 +25,31 @@ int main() {
 	glClearColor(0.4f, 0.7f, 1.0f, 1.0f);
 
 	shader_init();
+	GAME_SHADER->bind();
+
+	std::vector coords{
+		-0.5f,  0.5f,  0.0f,
+		 0.5f,  0.5f,  0.0f,
+		 0.5f, -0.5f,  0.0f,
+		-0.5f, -0.5f,  0.0f,
+	};
+
+	std::vector colors{
+		1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+	};
+
+	std::vector indices{
+		0, 1, 3, 3, 1, 2,
+	};
+
+	Mesh mesh(coords, indices, colors);
 
 	while (!glfwWindowShouldClose(wn)) {
-		glClear(GL_COLOR_BUFFER_BIT);
-		// Render stuff here?
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		mesh.draw();
 		glfwSwapBuffers(wn);
 		glfwPollEvents();
 	}
