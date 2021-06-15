@@ -39,3 +39,7 @@ extern std::unique_ptr<Shader> GAME_SHADER; // a basic shader
 inline void shader_init() {
     GAME_SHADER = std::make_unique<Shader>("src/shader/game_vert.glsl", "src/shader/game_frag.glsl");
 }
+
+inline void shader_destroy() {
+    GAME_SHADER->destroy();
+}
