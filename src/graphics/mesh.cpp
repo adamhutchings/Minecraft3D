@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<float> colors) {
+Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<float> texcoords) {
     
     glGenVertexArrays(1, &vao);
 
@@ -23,11 +23,11 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<fl
 
     indices_ct = indices.size();
 
-    // Colors
-    glGenBuffers(1, &color_id);
-    glBindBuffer(GL_ARRAY_BUFFER, color_id);
-        glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof (float), colors.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+    // Texture coordinates
+    glGenBuffers(1, &texcoords_id);
+    glBindBuffer(GL_ARRAY_BUFFER, texcoords_id);
+        glBufferData(GL_ARRAY_BUFFER, texcoords.size() * sizeof (float), texcoords.data(), GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
@@ -53,7 +53,7 @@ Mesh::~Mesh() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &vertices_id);
     glDeleteBuffers(1, &index_id);
-    glDeleteBuffers(1, &color_id);
+    glDeleteBuffers(1, &texcoords_id);
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &vao);
 }
