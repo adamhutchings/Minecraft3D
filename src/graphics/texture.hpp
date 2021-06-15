@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <vector>
+
 enum Texture {
 	GRASS_TOP = 240,
 	// more later
@@ -17,7 +19,7 @@ void load();
 // Unload it
 void unload();
 
-}
-
 // Get the texture atlas vertices.
 std::vector<float> get_vertices(Texture tex);
+
+}

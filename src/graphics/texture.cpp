@@ -11,6 +11,8 @@ unsigned id;
 
 }
 
+namespace tex {
+
 void load() {
 
     stbi_set_flip_vertically_on_load(true);
@@ -56,6 +58,8 @@ std::vector<float> get_vertices(Texture tex) {
         x + 0.0625f, y + 0.0625f,
         x + 0.0625f, y          ,
     };
+
+}
 
 }
 
