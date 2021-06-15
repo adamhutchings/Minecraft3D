@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <graphics/shader.hpp>
+
 int main() {
 
 	glfwInit(); // TODO - check for error
@@ -20,6 +22,8 @@ int main() {
 	// Background sky color
 	glClearColor(0.4f, 0.7f, 1.0f, 1.0f);
 
+	shader_init();
+
 	while (!glfwWindowShouldClose(wn)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		// Render stuff here?
@@ -27,6 +31,7 @@ int main() {
 		glfwPollEvents();
 	}
 
+	shader_destroy();
 	glfwDestroyWindow(wn);
 	glfwTerminate();
 
