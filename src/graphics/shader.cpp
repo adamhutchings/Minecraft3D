@@ -94,4 +94,9 @@ void Shader::set_uniform_value(std::string name, glm::mat4 value) {
     glUniformMatrix4fv(uniforms[name], 1, GL_FALSE, &value[0][0]);
 }
 
+void Shader::destroy() {
+    this->unbind();
+    glDeleteShader(program_id);
+}
+
 std::unique_ptr<Shader> GAME_SHADER;
