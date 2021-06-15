@@ -94,8 +94,4 @@ void Shader::set_uniform_value(std::string name, glm::mat4 value) {
     glUniformMatrix4fv(uniforms[name], 1, GL_FALSE, &value[0][0]);
 }
 
-void Shader::set_uniform_value(std::string name, int value) {
-    glUniform1i(uniforms[name], value);
-}
-
 std::unique_ptr<Shader> GAME_SHADER;
