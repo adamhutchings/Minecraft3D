@@ -19,8 +19,7 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<fl
     glGenBuffers(1, &index_id);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof (int), indices.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof (int), indices.data(), GL_STATIC_DRAW);
 
     indices_ct = indices.size();
 
@@ -32,6 +31,7 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<fl
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 
