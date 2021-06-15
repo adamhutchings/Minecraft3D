@@ -4,6 +4,7 @@
 
 #include <graphics/mesh.hpp>
 #include <graphics/shader.hpp>
+#include <graphics/texture.hpp>
 
 int main() {
 
@@ -27,6 +28,8 @@ int main() {
 	shader_init();
 	GAME_SHADER->bind();
 
+	tex::load();
+
 	std::vector coords{
 		-0.5f,  0.5f,  0.0f,
 		 0.5f,  0.5f,  0.0f,
@@ -34,18 +37,13 @@ int main() {
 		-0.5f, -0.5f,  0.0f,
 	};
 
-	std::vector colors{
-		1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,
-	};
+	std::vector texcoords = tex::get_vertices(Texture::GRASS_TOP);
 
 	std::vector indices{
 		0, 1, 3, 3, 1, 2,
 	};
 
-	Mesh mesh(coords, indices, colors);
+	Mesh mesh(coords, indices, texcoords);
 
 	while (!glfwWindowShouldClose(wn)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -54,6 +52,7 @@ int main() {
 		glfwPollEvents();
 	}
 
+	tex::unload();
 	shader_destroy();
 	glfwDestroyWindow(wn);
 	glfwTerminate();
