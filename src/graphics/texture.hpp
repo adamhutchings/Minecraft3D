@@ -7,8 +7,8 @@
 #include <vector>
 
 enum Texture {
-	GRASS_TOP_TEXTURE = 240,
-	INVALID_TEXTURE   = 19,
+	GRASS_TOP_TEXTURE            = 240,
+	INVALID_TEXTURE              = 19,
 };
 
 namespace tex {
