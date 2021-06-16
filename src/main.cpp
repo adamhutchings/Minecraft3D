@@ -40,7 +40,7 @@ int main() {
 		-0.5f, -0.5f,  0.0f,
 	};
 
-	std::vector texcoords = tex::get_vertices(Texture::GRASS_TOP);
+	std::vector texcoords = tex::get_vertices(Texture::GRASS_TOP_TEXTURE);
 
 	std::vector indices{
 		0, 1, 3, 3, 1, 2,
