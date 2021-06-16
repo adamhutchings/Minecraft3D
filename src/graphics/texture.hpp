@@ -8,7 +8,7 @@
 
 enum Texture {
 	GRASS_TOP = 240,
-	// more later
+	INVALID   = 19,
 };
 
 namespace tex {
