@@ -7,7 +7,10 @@
 #include <vector>
 
 enum Texture {
+	DIRT_TEXTURE                 = 19,
 	GRASS_TOP_TEXTURE            = 240,
+	STONE_TEXTURE                = 241,
+	GRASS_SIDE_TEXTURE           = 243,
 	INVALID_TEXTURE              = 19,
 };
 
