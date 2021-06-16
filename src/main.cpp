@@ -7,6 +7,8 @@
 #include <graphics/shader.hpp>
 #include <graphics/texture.hpp>
 
+#include <world/chunk.hpp>
+
 int main() {
 
 	glfwInit(); // TODO - check for error
@@ -33,20 +35,7 @@ int main() {
 
 	GAME_SHADER->register_uniform("game_matrix");
 
-	std::vector coords{
-		-0.5f,  0.5f,  0.0f,
-		 0.5f,  0.5f,  0.0f,
-		 0.5f, -0.5f,  0.0f,
-		-0.5f, -0.5f,  0.0f,
-	};
-
-	std::vector texcoords = tex::get_vertices(Texture::GRASS_TOP_TEXTURE);
-
-	std::vector indices{
-		0, 1, 3, 3, 1, 2,
-	};
-
-	Mesh mesh(coords, indices, texcoords);
+	Chunk chunk{};
 
 	Camera camera{};
 	camera.pitch(30.0f, ViewMode::SET);
@@ -57,7 +46,7 @@ int main() {
 		// Update camera position
 		GAME_SHADER->set_uniform_value("game_matrix", camera.get_transform_matrix());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		mesh.draw();
+		chunk.render();
 		glfwSwapBuffers(wn);
 		glfwPollEvents();
 	}
