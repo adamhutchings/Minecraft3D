@@ -1,5 +1,7 @@
 #include "keyboard.hpp"
 
+#include <graphics/camera.hpp>
+
 namespace {
 
 enum MovementMode {
@@ -15,6 +17,9 @@ enum MovementMode {
 
 // Can move multiple directions at once.
 MovementMode movement = 0;
+
+// How much to move.
+float movement_speed = 0.3f;
 
 void keyboard_callback(GLFWwindow* ignore, int key, int ignore2, int action, int mods) {
 
@@ -65,4 +70,21 @@ void keyboard_callback(GLFWwindow* ignore, int key, int ignore2, int action, int
 
 void initialize_keyboard_callback(GLFWwindow* wn) {
 	glfwSetKeyCallback(wn, keyboard_callback);
+}
+
+void do_movement() {
+
+	if (movement & UP)
+		global_camera.position(0, 1, 0, ViewMode::ADJUST);
+	if (movement & DOWN)
+		global_camera.position(0, -1, 0, ViewMode::ADJUST);
+	if (movement & LEFT)
+		global_camera.move(movement_speed,  90.0f);
+	if (movement & RIGHT)
+		global_camera.move(movement_speed, -90.0f);
+	if (movement & FORWARD)
+		global_camera.move(movement_speed,  0.0f);
+	if (movement & BACKWARD)
+		global_camera.move(movement_speed,  180.0f);
+
 }

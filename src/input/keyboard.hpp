@@ -10,4 +10,6 @@ namespace input {
 
 void initialize_keyboard_callback(GLFWwindow* wn);
 
+void do_movement();
+
 }
