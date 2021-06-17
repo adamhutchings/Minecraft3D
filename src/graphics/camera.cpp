@@ -20,6 +20,8 @@ void Camera::pitch(float angle, ViewMode mode) {
 	} else if (mode == SET) {
 		pitch_  = angle;
 	}
+	if (pitch_ < -89.0f) pitch_ = -89.0f;
+	if (pitch_ >  89.0f) pitch_ =  89.0f;
 }
 
 void Camera::yaw(float angle, ViewMode mode) {
