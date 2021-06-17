@@ -1,5 +1,6 @@
 #include "keyboard.hpp"
 
+#include <application.hpp>
 #include <graphics/camera.hpp>
 
 namespace {
@@ -25,7 +26,7 @@ float movement_speed = 0.3f;
 
 void keyboard_callback(GLFWwindow* ignore, int key, int ignore2, int action, int mods) {
 
-	int flag_to_change;
+	int flag_to_change = movement_mode::NONE;
 
 	switch (key) {
 		case GLFW_KEY_A:
@@ -46,8 +47,9 @@ void keyboard_callback(GLFWwindow* ignore, int key, int ignore2, int action, int
 		case GLFW_KEY_SPACE:
 			flag_to_change = movement_mode::UP;
 			break;
-		default:
-			flag_to_change = movement_mode::NONE;
+		case GLFW_KEY_ESCAPE:
+			global_app->close();
+		default:;
 	}
 
 	if (flag_to_change == movement_mode::NONE) return;
