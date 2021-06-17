@@ -56,4 +56,9 @@ glm::mat4 Camera::get_transform_matrix() {
 
 }
 
+void Camera::move(float quantity, float degrees) {
+	location.x += quantity * cos(glm::radians(degrees + yaw));
+	location.z += quantity * sin(glm::radians(degrees + yaw));
+}
+
 Camera global_camera{};

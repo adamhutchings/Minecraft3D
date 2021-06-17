@@ -28,6 +28,8 @@ public:
 	void position(float x, float y, float z, ViewMode mode);
 	// Multiply this in the fragment shader to make a view.
 	glm::mat4 get_transform_matrix();
+	// Move in a given direction degrees from straight ahead.
+	void move(float quantity, float degrees);
 
 };
 
