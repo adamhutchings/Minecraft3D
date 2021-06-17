@@ -1,7 +1,5 @@
 #include "mouse.hpp"
 
-#include <GLFW/glfw3.h>
-
 #include <graphics/camera.hpp>
 
 namespace {
@@ -16,7 +14,7 @@ void mouse_callback(GLFWwindow* wn, double x, double y) {
 	int xdiff = x - cx, ydiff = y - cy;
 
 	global_camera.yaw(xdiff * sensitivity, ViewMode::ADJUST);
-	global_camera.pitch(ydiff * sensitivity);
+	global_camera.pitch(ydiff * sensitivity, ViewMode::ADJUST);
 
 	cx = x, cy = y;
 
@@ -26,9 +24,9 @@ void mouse_callback(GLFWwindow* wn, double x, double y) {
 
 namespace input {
 
-void initialize_mouse_callback(void* wn) {
+void initialize_mouse_callback(GLFWwindow* wn) {
 	glfwSetInputMode(wn, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback((GLFWwindow*) wn, mouse_movement_callback);
+	glfwSetCursorPosCallback(wn, mouse_callback);
 }
 
 }

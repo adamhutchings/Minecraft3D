@@ -6,6 +6,7 @@
 #include <graphics/mesh.hpp>
 #include <graphics/shader.hpp>
 #include <graphics/texture.hpp>
+#include <input/mouse.hpp>
 
 #include <world/chunk.hpp>
 
@@ -24,6 +25,8 @@ int main() {
 	glfwMakeContextCurrent(wn);
 	gladLoadGL();
 	glfwShowWindow(wn);
+
+	input::initialize_mouse_callback(wn);
 
 	// Background sky color
 	glClearColor(0.4f, 0.7f, 1.0f, 1.0f);
