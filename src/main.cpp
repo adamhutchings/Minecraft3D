@@ -48,6 +48,8 @@ int main() {
 	global_camera.position(2, 2, 2, ViewMode::SET);
 	global_camera.yaw(210.0f, ViewMode::SET);
 
+	glEnable(GL_DEPTH_TEST);
+
 	while (!glfwWindowShouldClose(wn)) {
 
 		auto start_of_frame = std::chrono::steady_clock::now();
