@@ -85,9 +85,9 @@ void do_movement() {
 	if (movement & movement_mode::DOWN)
 		global_camera.position(0, -1, 0, ViewMode::ADJUST);
 	if (movement & movement_mode::LEFT)
-		global_camera.move(movement_speed,  90.0f);
-	if (movement & movement_mode::RIGHT)
 		global_camera.move(movement_speed, -90.0f);
+	if (movement & movement_mode::RIGHT)
+		global_camera.move(movement_speed,  90.0f);
 	if (movement & movement_mode::FORWARD)
 		global_camera.move(movement_speed,  0.0f);
 	if (movement & movement_mode::BACKWARD)
