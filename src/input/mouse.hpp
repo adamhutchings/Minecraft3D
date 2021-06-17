@@ -10,6 +10,6 @@ namespace input {
 /**
  * This also locks the mouse so it's hidden.
  */
-void initialize_mouse_callback();
+void initialize_mouse_callback(void* wn);
 
 }
