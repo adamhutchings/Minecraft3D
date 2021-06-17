@@ -104,6 +104,7 @@ void Chunk::update_mesh() {
 	std::vector<float> vertices;
     std::vector<int> indices;
     std::vector<float> texcoords;
+    std::vector<float> grassflags;
 
     int faces_pushed = 0;
 
@@ -130,6 +131,20 @@ void Chunk::update_mesh() {
 
                         std::vector<float> coords = tex::get_vertices(tex);
 
+                        float grass_flag = 0.0f;
+                        // TO IMPROVE - getting the texture for each face
+                        if (tex == GRASS_TOP_TEXTURE) {
+                            grass_flag = 2.0f;
+                        } else if (tex == GRASS_SIDE_TEXTURE) {
+                            grass_flag = 1.0f;
+                        }
+
+                        // Once for eaach vertex
+                        grassflags.push_back(grass_flag);
+                        grassflags.push_back(grass_flag);
+                        grassflags.push_back(grass_flag);
+                        grassflags.push_back(grass_flag);
+
                         for (auto f : coords)
                             texcoords.push_back(f);
 
@@ -147,7 +162,7 @@ void Chunk::update_mesh() {
         }
     }
 
-   	chunk_mesh = std::make_unique<Mesh>(vertices, indices, texcoords);
+   	chunk_mesh = std::make_unique<Mesh>(vertices, indices, texcoords, grassflags);
 
 }
 

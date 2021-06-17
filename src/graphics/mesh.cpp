@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<float> texcoords) {
+Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<float> texcoords, std::vector<float> grassflags) {
     
     glGenVertexArrays(1, &vao);
 
@@ -30,6 +30,13 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<int> indices, std::vector<fl
         glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    // Grass flags
+    glGenBuffers(1, &grass_flag_id);
+    glBindBuffer(GL_ARRAY_BUFFER, grass_flag_id);
+        glBufferData(GL_ARRAY_BUFFER, grassflags.size() * sizeof (float), grassflags.data(), GL_STATIC_DRAW);
+        glVertexAttribPointer(2, 1, GL_FLOAT, 0, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -40,12 +47,14 @@ void Mesh::draw() {
     glBindVertexArray(vao);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     glDrawElements(GL_TRIANGLES, indices_ct, GL_UNSIGNED_INT, 0);
 
     glBindVertexArray(0);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
     
 }
 
@@ -54,6 +63,7 @@ Mesh::~Mesh() {
     glDeleteBuffers(1, &vertices_id);
     glDeleteBuffers(1, &index_id);
     glDeleteBuffers(1, &texcoords_id);
+    glDeleteBuffers(1, &grass_flag_id);
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &vao);
 }
