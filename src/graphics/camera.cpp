@@ -55,3 +55,5 @@ glm::mat4 Camera::get_transform_matrix() {
     return proj * view;
 
 }
+
+Camera global_camera{};

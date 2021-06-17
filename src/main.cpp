@@ -37,14 +37,13 @@ int main() {
 
 	Chunk chunk{};
 
-	Camera camera{};
-	camera.pitch(30.0f, ViewMode::SET);
-	camera.position(2, 2, 2, ViewMode::SET);
-	camera.yaw(210.0f, ViewMode::SET);
+	global_camera.pitch(30.0f, ViewMode::SET);
+	global_camera.position(2, 2, 2, ViewMode::SET);
+	global_camera.yaw(210.0f, ViewMode::SET);
 
 	while (!glfwWindowShouldClose(wn)) {
 		// Update camera position
-		GAME_SHADER->set_uniform_value("game_matrix", camera.get_transform_matrix());
+		GAME_SHADER->set_uniform_value("game_matrix", global_camera.get_transform_matrix());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		chunk.render();
 		glfwSwapBuffers(wn);

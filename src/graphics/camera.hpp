@@ -6,6 +6,7 @@
 #pragma once
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <memory>
 
 enum ViewMode {
 	SET,
@@ -29,3 +30,6 @@ public:
 	glm::mat4 get_transform_matrix();
 
 };
+
+extern Camera global_camera;
+
