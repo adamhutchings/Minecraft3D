@@ -139,7 +139,7 @@ void Chunk::update_mesh() {
                             grass_flag = 1.0f;
                         }
 
-                        // Once for eaach vertex
+                        // Once for each vertex
                         grassflags.push_back(grass_flag);
                         grassflags.push_back(grass_flag);
                         grassflags.push_back(grass_flag);
