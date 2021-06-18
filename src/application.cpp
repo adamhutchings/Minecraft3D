@@ -39,8 +39,8 @@ Application::Application() {
 
 	chunk = std::make_unique<Chunk>(0, 0, 0);
 
-	global_camera.pitch(60.0f, ViewMode::SET);
-	global_camera.position(0, 20, 0, ViewMode::SET);
+	global_camera.pitch(-60.0f, ViewMode::SET);
+	global_camera.position(-1, -1, -1, ViewMode::SET);
 	global_camera.yaw(30.0f, ViewMode::SET);
 
 	glEnable(GL_DEPTH_TEST);
