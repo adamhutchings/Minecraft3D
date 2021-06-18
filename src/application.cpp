@@ -37,7 +37,7 @@ Application::Application() {
 
 	GAME_SHADER->register_uniform("game_matrix");
 
-	chunk = std::make_unique<Chunk>(0, 0, 0);
+	world = std::make_unique<World>();
 
 	global_camera.pitch(-60.0f, ViewMode::SET);
 	global_camera.position(-1, -1, -1, ViewMode::SET);
@@ -66,7 +66,7 @@ void Application::mainloop() {
 		// Update camera position
 		GAME_SHADER->set_uniform_value("game_matrix", global_camera.get_transform_matrix());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		chunk->render();
+		world->render();
 		glfwSwapBuffers(wn);
 		glfwPollEvents();
 

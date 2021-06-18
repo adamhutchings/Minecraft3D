@@ -9,7 +9,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <world/chunk.hpp>
+#include <world/world.hpp>
 
 class Application {
 
@@ -17,7 +17,7 @@ private:
 	GLFWwindow* wn;
 	void init_context(int major, int minor);
 	bool closing = false;
-	std::unique_ptr<Chunk> chunk;
+	std::unique_ptr<World> world;
 
 public:
 	Application();
