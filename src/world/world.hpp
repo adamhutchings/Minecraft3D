@@ -14,13 +14,7 @@ private:
 	static const int
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
-	std::array<
-		std::array<
-			std::array<
-				Chunk, WORLD_WIDTH
-			>, WORLD_HEIGHT
-		>, WORLD_WIDTH
-	> chunks;
+	std::array<Chunk, WORLD_WIDTH * WORLD_WIDTH * WORLD_HEIGHT> chunks;
 
 public:
 	World();

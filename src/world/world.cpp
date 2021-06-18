@@ -13,7 +13,7 @@ World::World() {
 }
 
 Chunk& World::at(int x, int y, int z) {
-	return chunks.at(x).at(y).at(z);
+	return chunks.at(y * WORLD_WIDTH * WORLD_WIDTH + x * WORLD_WIDTH + z);
 }
 
 BlockType& World::block_at(int x, int y, int z) {
