@@ -44,6 +44,7 @@ Application::Application() {
 	global_camera.yaw(210.0f, ViewMode::SET);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 }
 
