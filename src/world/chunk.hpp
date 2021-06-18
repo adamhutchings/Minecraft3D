@@ -10,10 +10,12 @@
 #include <graphics/mesh.hpp>
 #include <world/blocks.hpp>
 
+const int CHUNK_SIZE = 16;
+
 class Chunk {
 
 private:
-	static const int CHUNK_SIZE = 16;
+	int cx, cy, cz;
 	// All of the blocks in the mesh
 	std::array<BlockType, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE> blocks;
 	// The mesh of all of the blocks
@@ -21,7 +23,8 @@ private:
 	bool block_borders_air(int i, int j, int k, Side side);
 
 public:
-	Chunk();
+	Chunk() = default;
+	Chunk(int x, int y, int z);
 	void update_mesh(); // only do this when the blocks in the chunk are changed
 	BlockType& at(int x, int y, int z);
 	void render();

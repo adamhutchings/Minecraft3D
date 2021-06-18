@@ -6,50 +6,54 @@ namespace {
 
 // Get the OpenGL vertices of a block face
 std::vector<float> get_face_vertices(
-	Side side, float x, float y, float z
+	Side side, float x, float y, float z,
+    float cx, float cy, float cz // the chunk coordinates
 ) {
+    float finalX = cx * CHUNK_SIZE + x;
+    float finalY = cy * CHUNK_SIZE + y;
+    float finalZ = cz * CHUNK_SIZE + z;
     switch (side) {
         case UP:
             return std::vector<float> {
-                x + 1, y + 1, z,
-                x,     y + 1, z,
-                x,     y + 1, z + 1,
-                x + 1, y + 1, z + 1,
+                finalX + 1, finalY + 1, finalZ,
+                finalX,     finalY + 1, finalZ,
+                finalX,     finalY + 1, finalZ + 1,
+                finalX + 1, finalY + 1, finalZ + 1,
             };
         case DOWN:
             return std::vector<float> {
-                x + 1, y, z,
-                x + 1, y, z + 1,
-                x,     y, z + 1,
-                x,     y, z,
+                finalX + 1, finalY, finalZ,
+                finalX + 1, finalY, finalZ + 1,
+                finalX,     finalY, finalZ + 1,
+                finalX,     finalY, finalZ,
             };
         case WEST:
             return std::vector<float> {
-                x, y,     z + 1,
-                x, y + 1, z + 1,
-                x, y + 1, z,
-                x, y,     z,
+                finalX, finalY,     finalZ + 1,
+                finalX, finalY + 1, finalZ + 1,
+                finalX, finalY + 1, finalZ,
+                finalX, finalY,     finalZ,
             };
         case EAST:
             return std::vector<float> {
-                x + 1, y,     z,
-                x + 1, y + 1, z,
-                x + 1, y + 1, z + 1,
-                x + 1, y,     z + 1,
+                finalX + 1, finalY,     finalZ,
+                finalX + 1, finalY + 1, finalZ,
+                finalX + 1, finalY + 1, finalZ + 1,
+                finalX + 1, finalY,     finalZ + 1,
             };
         case NORTH:
             return std::vector<float> {
-                x,     y,     z,
-                x,     y + 1, z,
-                x + 1, y + 1, z,
-                x + 1, y,     z,
+                finalX,     finalY,     finalZ,
+                finalX,     finalY + 1, finalZ,
+                finalX + 1, finalY + 1, finalZ,
+                finalX + 1, finalY,     finalZ,
             };
         case SOUTH:
             return std::vector<float> {
-                x + 1, y,     z + 1,
-                x + 1, y + 1, z + 1,
-                x,     y + 1, z + 1,
-                x,     y,     z + 1,
+                finalX + 1, finalY,     finalZ + 1,
+                finalX + 1, finalY + 1, finalZ + 1,
+                finalX,     finalY + 1, finalZ + 1,
+                finalX,     finalY,     finalZ + 1,
             };
         default:
             return std::vector<float> {};
@@ -58,7 +62,9 @@ std::vector<float> get_face_vertices(
 
 }
 
-Chunk::Chunk() {
+Chunk::Chunk(int x, int y, int z) {
+
+    cx = x, cy = y, cz = z;
 
 	for (int i = 0; i < CHUNK_SIZE; ++i) {
 		for (int j = 0; j < CHUNK_SIZE; ++j) {
@@ -123,7 +129,7 @@ void Chunk::update_mesh() {
                     	auto block = at(i, j, k);
 
                         // Add block face to the mesh
-                        for (auto vertex : get_face_vertices(side, i, j, k)) {
+                        for (auto vertex : get_face_vertices(side, i, j, k, cx, cy, cz)) {
                             vertices.push_back(vertex);
                         }
 

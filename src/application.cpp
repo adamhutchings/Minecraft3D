@@ -37,7 +37,7 @@ Application::Application() {
 
 	GAME_SHADER->register_uniform("game_matrix");
 
-	chunk = std::make_unique<Chunk>();
+	chunk = std::make_unique<Chunk>(0, 0, 0);
 
 	global_camera.pitch(60.0f, ViewMode::SET);
 	global_camera.position(0, 20, 0, ViewMode::SET);
