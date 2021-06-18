@@ -14,10 +14,17 @@ private:
 	static const int
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
-	std::array<Chunk, WORLD_HEIGHT * WORLD_WIDTH * WORLD_WIDTH> chunks;
+	std::array<
+		std::array<
+			std::array<
+				Chunk, WORLD_WIDTH
+			>, WORLD_HEIGHT
+		>, WORLD_WIDTH
+	> chunks;
 
 public:
 	World();
 	Chunk& at(int x, int y, int z);
+	void render();
 
 };
