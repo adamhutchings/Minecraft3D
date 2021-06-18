@@ -25,6 +25,7 @@ void mouse_callback(GLFWwindow* wn, double x, double y) {
 namespace input {
 
 void initialize_mouse_callback(GLFWwindow* wn) {
+	glfwGetCursorPos(wn, &cx, &cy);
 	glfwSetInputMode(wn, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(wn, mouse_callback);
 }
