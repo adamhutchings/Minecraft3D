@@ -16,6 +16,11 @@ Chunk& World::at(int x, int y, int z) {
 	return chunks.at(x).at(y).at(z);
 }
 
+BlockType& World::block_at(int x, int y, int z) {
+	return at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
+	      .at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+}
+
 void World::render() {
 	
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
