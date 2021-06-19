@@ -12,6 +12,6 @@ namespace input {
 /**
  * This also locks the mouse so it's hidden.
  */
-void initialize_mouse_callback(GLFWwindow* wn);
+void initialize_mouse_callbacks(GLFWwindow* wn);
 
 }

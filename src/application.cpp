@@ -24,7 +24,7 @@ Application::Application() {
 	gladLoadGL();
 	glfwShowWindow(wn);
 
-	input::initialize_mouse_callback(wn);
+	input::initialize_mouse_callbacks(wn);
 	input::initialize_keyboard_callback(wn);
 
 	// Background sky color
