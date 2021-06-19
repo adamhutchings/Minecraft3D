@@ -64,14 +64,18 @@ std::vector<float> get_face_vertices(
 
 }
 
-Chunk::Chunk(int x, int y, int z) {
+Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
 
     cx = x, cy = y, cz = z;
 
 	for (int i = 0; i < CHUNK_SIZE; ++i) {
 		for (int j = 0; j < CHUNK_SIZE; ++j) {
 			for (int k = 0; k < CHUNK_SIZE; ++k) {
-				this->at(i, j, k) = GRASS_BLOCK; // for now
+				this->at(i, j, k) = generator.get_block_at(
+                    cx * CHUNK_SIZE + i,
+                    cy * CHUNK_SIZE + j,
+                    cz * CHUNK_SIZE + k
+                );
 			}
 		}
 	}

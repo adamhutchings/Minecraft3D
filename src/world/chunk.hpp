@@ -9,6 +9,7 @@
 
 #include <graphics/mesh.hpp>
 #include <world/blocks.hpp>
+#include <world/gen/generator.hpp>
 
 const int CHUNK_SIZE = 16;
 
@@ -27,7 +28,7 @@ private:
 
 public:
 	Chunk() = default;
-	Chunk(int x, int y, int z);
+	Chunk(int x, int y, int z, WorldGenerator generator);
 	void update_mesh(World* world); // only do this when the blocks in the chunk are changed
 	BlockType& at(int x, int y, int z);
 	void render();
