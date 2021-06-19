@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <world/world.hpp>
+
 namespace {
 
 // Get the OpenGL vertices of a block face
@@ -74,38 +76,30 @@ Chunk::Chunk(int x, int y, int z) {
 		}
 	}
 
-	update_mesh();
-
 }
 
 BlockType& Chunk::at(int x, int y, int z) {
 	return blocks.at(x * CHUNK_SIZE * CHUNK_SIZE + y * CHUNK_SIZE + z);
 }
 
-bool Chunk::block_borders_air(int i, int j, int k, Side side) {
+bool Chunk::block_borders_air(int i, int j, int k, Side side, World* world) {
 	switch (side) {
 		case UP:
-			if (j == CHUNK_SIZE - 1) return true;
-			return at(i, j + 1, k) == AIR_BLOCK;
+			return world->block_at(i, j + 1, k) == AIR_BLOCK;
 		case DOWN:
-			if (j == 0) return true;
-			return at(i, j - 1, k) == AIR_BLOCK;
+			return world->block_at(i, j - 1, k) == AIR_BLOCK;
 		case WEST:
-			if (i == 0) return true;
-			return at(i - 1, j, k) == AIR_BLOCK;
+			return world->block_at(i - 1, j, k) == AIR_BLOCK;
 		case EAST:
-			if (i == CHUNK_SIZE - 1) return true;
-			return at(i + 1, j, k) == AIR_BLOCK;
+			return world->block_at(i + 1, j, k) == AIR_BLOCK;
 		case NORTH:
-			if (k == 0) return true;
-			return at(i, j, k - 1) == AIR_BLOCK;
+			return world->block_at(i, j, k - 1) == AIR_BLOCK;
 		case SOUTH:
-			if (k == CHUNK_SIZE - 1) return true;
-			return at(i, j, k + 1) == AIR_BLOCK;
+			return world->block_at(i, j, k + 1) == AIR_BLOCK;
 	}
 }
 
-void Chunk::update_mesh() {
+void Chunk::update_mesh(World* world) {
 
 	std::vector<float> vertices;
     std::vector<int> indices;
@@ -121,7 +115,10 @@ void Chunk::update_mesh() {
                 for (int s = 0; s < 6; ++s) {
                     Side side = static_cast<Side>(s);
                     if (block_borders_air(
-                        i, j, k, side
+                        cx * CHUNK_SIZE + i,
+                        cy * CHUNK_SIZE + j,
+                        cz * CHUNK_SIZE + k,
+                        side, world
                     ) && this->at(
                         i, j, k
                     ) != AIR_BLOCK) {

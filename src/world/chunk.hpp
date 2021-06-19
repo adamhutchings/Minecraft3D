@@ -12,6 +12,9 @@
 
 const int CHUNK_SIZE = 16;
 
+// To detect blocks in update_mesh
+class World;
+
 class Chunk {
 
 private:
@@ -20,12 +23,12 @@ private:
 	std::array<BlockType, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE> blocks;
 	// The mesh of all of the blocks
 	std::unique_ptr<Mesh> chunk_mesh;
-	bool block_borders_air(int i, int j, int k, Side side);
+	bool block_borders_air(int i, int j, int k, Side side, World* world);
 
 public:
 	Chunk() = default;
 	Chunk(int x, int y, int z);
-	void update_mesh(); // only do this when the blocks in the chunk are changed
+	void update_mesh(World* world); // only do this when the blocks in the chunk are changed
 	BlockType& at(int x, int y, int z);
 	void render();
 

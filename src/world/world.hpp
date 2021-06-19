@@ -19,7 +19,7 @@ private:
 public:
 	World();
 	Chunk& at(int x, int y, int z);
-	BlockType& block_at(int x, int y, int z);
+	BlockType block_at(int x, int y, int z);
 	void render();
 
 };
