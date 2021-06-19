@@ -20,6 +20,10 @@ void mouse_move_callback(GLFWwindow* wn, double x, double y) {
 
 }
 
+void mouse_click_callback(GLFWwindow* wn, int button, int action, int mods) {
+
+}
+
 }
 
 namespace input {
@@ -28,6 +32,7 @@ void initialize_mouse_callbacks(GLFWwindow* wn) {
 	glfwGetCursorPos(wn, &cx, &cy);
 	glfwSetInputMode(wn, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(wn, mouse_move_callback);
+	glfwSetMouseButtonCallback(wn, mouse_click_callback);
 }
 
 }
