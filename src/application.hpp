@@ -17,13 +17,13 @@ private:
 	GLFWwindow* wn;
 	void init_context(int major, int minor);
 	bool closing = false;
-	std::unique_ptr<World> world;
 
 public:
 	Application();
 	void mainloop();
 	~Application();
 	void close(); // set to close
+	std::unique_ptr<World> world;
 
 };
 
