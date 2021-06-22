@@ -1,6 +1,9 @@
 #include "mouse.hpp"
 
 #include <application.hpp>
+#include <world/blocks.hpp>
+
+#include <iostream>
 
 namespace {
 
@@ -21,6 +24,15 @@ void mouse_move_callback(GLFWwindow* wn, double x, double y) {
 }
 
 void mouse_click_callback(GLFWwindow* wn, int button, int action, int mods) {
+
+	if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT) {
+
+		int x, y, z;
+		if ( global_app->player->get_block_break_location(x, y, z) ) {
+			global_app->world->set_block_at(x, y, z, BlockType::AIR_BLOCK);
+		}
+
+	}
 
 }
 
