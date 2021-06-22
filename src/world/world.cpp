@@ -39,6 +39,16 @@ BlockType World::block_at(int x, int y, int z) {
 	      .at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
 }
 
+void World::set_block_at(int x, int y, int z, BlockType block) {
+	// TODO TODO TODO error checkings
+	at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
+	.at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
+	 = block;
+
+	at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE).update_mesh(this);
+
+}
+
 void World::render() {
 	
 	for (int x = 0; x < WORLD_WIDTH; ++x) {

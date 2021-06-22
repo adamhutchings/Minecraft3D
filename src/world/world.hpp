@@ -6,6 +6,7 @@
 
 #include <array>
 
+#include <world/blocks.hpp>
 #include <world/chunk.hpp>
 
 class World {
@@ -20,6 +21,7 @@ public:
 	World();
 	Chunk& at(int x, int y, int z);
 	BlockType block_at(int x, int y, int z);
+	void set_block_at(int x, int y, int z, BlockType block);
 	void render();
 
 };
