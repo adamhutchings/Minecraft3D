@@ -72,7 +72,7 @@ bool Camera::get_block_break_location(int& x, int& y, int &z) {
 	static const float step = 0.01f;
 
 	// We also stop searching after a given ABSOLUTE distance.
-	static const int search_limit = 5.0f;
+	static const float search_limit = 5.0f;
 
 	// The current position we're checking.
 	float cx = location.x, cy = location.y, cz = location.z;
@@ -108,20 +108,23 @@ bool Camera::get_block_break_location(int& x, int& y, int &z) {
 		&&  last_checked_y == (int) cy
 		&&  last_checked_z == (int) cz
 		)
-			continue; // Don't bother checking a given block more than once
+			; // Don't bother checking a given block more than once
+		else {
 
-		// Set cached value
-		last_checked_x = (int) cx,
-		last_checked_y = (int) cy,
-		last_checked_z = (int) cz;
+			// Set cached value
+			last_checked_x = (int) cx,
+			last_checked_y = (int) cy,
+			last_checked_z = (int) cz;
 
-		auto block = global_app->world->block_at(
-			last_checked_x, last_checked_y, last_checked_z
-		);
+			auto block = global_app->world->block_at(
+				last_checked_x, last_checked_y, last_checked_z
+			);
 
-		if (block != BlockType::AIR_BLOCK) {
-			block_found = true;
-			break;
+			if (block != BlockType::AIR_BLOCK) {
+				block_found = true;
+				break;
+			}
+
 		}
 
 		cx += increment.x;
