@@ -9,6 +9,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <player/player.hpp>
 #include <world/world.hpp>
 
 class Application {
@@ -24,6 +25,7 @@ public:
 	~Application();
 	void close(); // set to close
 	std::unique_ptr<World> world;
+	std::unique_ptr<Player> player;
 
 };
 

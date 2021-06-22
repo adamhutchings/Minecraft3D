@@ -1,6 +1,6 @@
 #include "mouse.hpp"
 
-#include <graphics/camera.hpp>
+#include <application.hpp>
 
 namespace {
 
@@ -13,8 +13,8 @@ void mouse_move_callback(GLFWwindow* wn, double x, double y) {
 
 	int xdiff = x - cx, ydiff = y - cy;
 
-	global_camera.yaw(xdiff * sensitivity, ViewMode::ADJUST);
-	global_camera.pitch(ydiff * sensitivity, ViewMode::ADJUST);
+	global_app->player->camera.yaw(xdiff * sensitivity, ViewMode::ADJUST);
+	global_app->player->camera.pitch(ydiff * sensitivity, ViewMode::ADJUST);
 
 	cx = x, cy = y;
 

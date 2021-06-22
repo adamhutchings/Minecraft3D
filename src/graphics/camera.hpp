@@ -32,6 +32,3 @@ public:
 	void move(float quantity, float degrees);
 
 };
-
-extern Camera global_camera;
-

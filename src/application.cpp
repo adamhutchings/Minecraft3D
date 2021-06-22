@@ -38,10 +38,11 @@ Application::Application() {
 	GAME_SHADER->register_uniform("game_matrix");
 
 	world = std::make_unique<World>();
+	player = std::make_unique<Player>();
 
-	global_camera.pitch(-60.0f, ViewMode::SET);
-	global_camera.position(-1, -1, -1, ViewMode::SET);
-	global_camera.yaw(30.0f, ViewMode::SET);
+	player->camera.pitch(-60.0f, ViewMode::SET);
+	player->camera.position(-1, -1, -1, ViewMode::SET);
+	player->camera.yaw(30.0f, ViewMode::SET);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -64,7 +65,7 @@ void Application::mainloop() {
 		input::do_movement();
 
 		// Update camera position
-		GAME_SHADER->set_uniform_value("game_matrix", global_camera.get_transform_matrix());
+		GAME_SHADER->set_uniform_value("game_matrix", player->camera.get_transform_matrix());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world->render();
 		glfwSwapBuffers(wn);
