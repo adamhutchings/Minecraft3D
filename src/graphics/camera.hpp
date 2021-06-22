@@ -30,5 +30,8 @@ public:
 	glm::mat4 get_transform_matrix();
 	// Move in a given direction degrees from straight ahead.
 	void move(float quantity, float degrees);
+	// Find the location of the first solid block to break.
+	// Returns false if no block was found.
+	bool get_block_break_location(int& x, int& y, int& z);
 
 };

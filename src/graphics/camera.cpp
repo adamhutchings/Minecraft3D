@@ -1,5 +1,8 @@
 #include "camera.hpp"
 
+#include <application.hpp>
+#include <world/blocks.hpp>
+
 Camera::Camera() {
 
 	// Lots of zeros!
@@ -61,6 +64,80 @@ glm::mat4 Camera::get_transform_matrix() {
 void Camera::move(float quantity, float degrees) {
 	location.x += quantity * cos(glm::radians(degrees + yaw_));
 	location.z += quantity * sin(glm::radians(degrees + yaw_));
+}
+
+bool Camera::get_block_break_location(int& x, int& y, int &z) {
+	
+	// We step forward the camera by some increment.
+	static const float step = 0.01f;
+
+	// We also stop searching after a given ABSOLUTE distance.
+	static const int search_limit = 5.0f;
+
+	// The current position we're checking.
+	float cx = location.x, cy = location.y, cz = location.z;
+
+	// How far we've gone so far.
+	float distance_searched = 0.0f;
+
+	// The increment we travel by.
+	auto increment = glm::vec3(
+		 cos(glm::radians(pitch_)) * cos(glm::radians(yaw_)),
+		-sin(glm::radians(pitch_)),
+		 cos(glm::radians(pitch_)) * sin(glm::radians(yaw_))
+	);
+
+	increment = glm::normalize(increment) * step;
+
+	// Also, we want to avoid repeatedly checking the same
+	// block in the world, so cache the current position so
+	// we can avoid checking. Start them all at a value not
+	// in the world so we make sure to check the first iter.
+	int
+		last_checked_x = -1
+	   ,last_checked_y = -1
+	   ,last_checked_z = -1
+	;
+
+	bool block_found = false;
+
+	for ( ; distance_searched < search_limit; distance_searched += step) {
+
+		if (
+			last_checked_x == (int) cx
+		&&  last_checked_y == (int) cy
+		&&  last_checked_z == (int) cz
+		)
+			continue; // Don't bother checking a given block more than once
+
+		// Set cached value
+		last_checked_x = (int) cx,
+		last_checked_y = (int) cy,
+		last_checked_z = (int) cz;
+
+		auto block = global_app->world->block_at(
+			last_checked_x, last_checked_y, last_checked_z
+		);
+
+		if (block != BlockType::AIR_BLOCK) {
+			block_found = true;
+			break;
+		}
+
+		cx += increment.x;
+		cy += increment.y;
+		cz += increment.z;
+
+	}
+
+	if (block_found) {
+		x = cx;
+		y = cy;
+		z = cz;
+	}
+
+	return block_found;
+
 }
 
 Camera global_camera{};
