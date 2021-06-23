@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include <world/save/chunk_cache.hpp>
 #include <world/world.hpp>
 
 namespace {
@@ -80,6 +81,11 @@ Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
 		}
 	}
 
+}
+
+Chunk::Chunk(int x, int y, int z, CachedChunk& chunk) {
+    cx = x, cy = y, cz = z;
+    chunk.read(this);
 }
 
 BlockType& Chunk::at(int x, int y, int z) {
