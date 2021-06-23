@@ -116,11 +116,13 @@ bool Camera::get_block_break_location(int& x, int& y, int &z) {
 			last_checked_y = (int) cy,
 			last_checked_z = (int) cz;
 
-			auto block = global_app->world->get_block_at(
-				last_checked_x, last_checked_y, last_checked_z
+			BlockType block;
+
+			bool block_exists = global_app->world->get_block_at(
+				last_checked_x, last_checked_y, last_checked_z, block
 			);
 
-			if (block != BlockType::AIR_BLOCK) {
+			if (block != BlockType::AIR_BLOCK && block_exists) {
 				block_found = true;
 				break;
 			}

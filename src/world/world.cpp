@@ -50,18 +50,23 @@ Chunk* World::get_chunk_at(int x, int y, int z) {
 
 }
 
-BlockType World::get_block_at(int x, int y, int z) {
-	if ( (x < 0) || (y < 0) || (z < 0) ) return AIR_BLOCK;
-	if (
+bool World::get_block_at(int x, int y, int z, BlockType& block) {
+
+	if ( (x < 0) || (y < 0) || (z < 0) ||
 		(x >= WORLD_WIDTH  * CHUNK_SIZE)
 	||  (y >= WORLD_HEIGHT * CHUNK_SIZE)
 	||  (z >= WORLD_WIDTH  * CHUNK_SIZE)
-	) return AIR_BLOCK;
-	return  get_chunk_containing_coords(x, y, z)
-	        ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+	) {
+		block = AIR_BLOCK;
+		return false;
+	}
+
+	block = get_chunk_containing_coords(x, y, z) ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+	return true;
+
 }
 
-void World::set_block_at(int x, int y, int z, BlockType block) {
+bool World::set_block_at(int x, int y, int z, BlockType block) {
 
 	auto chunk = get_chunk_containing_coords(x, y, z);
 
@@ -69,6 +74,8 @@ void World::set_block_at(int x, int y, int z, BlockType block) {
 		chunk->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE) = block;
 		chunk->update_mesh(this);
 	}
+
+	return chunk != nullptr;
 
 }
 

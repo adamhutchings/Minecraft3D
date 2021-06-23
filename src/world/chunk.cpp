@@ -89,29 +89,30 @@ BlockType& Chunk::at(int x, int y, int z) {
 bool Chunk::block_borders_air(int i, int j, int k, Side side, World* world) {
 
     BlockType block;
+    bool exists;
 
 	switch (side) {
 		case UP:
-			block = world->get_block_at(i, j + 1, k);
+			exists = world->get_block_at(i, j + 1, k, block);
             break;
 		case DOWN:
-			block = world->get_block_at(i, j - 1, k);
+			exists = world->get_block_at(i, j - 1, k, block);
             break;
 		case WEST:
-			block = world->get_block_at(i - 1, j, k);
+			exists = world->get_block_at(i - 1, j, k, block);
             break;
 		case EAST:
-			block = world->get_block_at(i + 1, j, k);
+			exists = world->get_block_at(i + 1, j, k, block);
             break;
 		case NORTH:
-			block = world->get_block_at(i, j, k - 1);
+			exists = world->get_block_at(i, j, k - 1, block);
             break;
 		case SOUTH:
-			block = world->get_block_at(i, j, k + 1);
+			exists = world->get_block_at(i, j, k + 1, block);
             break;
 	}
 
-    return block == AIR_BLOCK;
+    return (block == AIR_BLOCK) || !exists;
 
 }
 

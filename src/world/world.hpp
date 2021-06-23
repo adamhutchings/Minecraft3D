@@ -21,8 +21,8 @@ private:
 public:
 	World();
 	Chunk* get_chunk_at(int x, int y, int z);
-	BlockType get_block_at(int x, int y, int z);
-	void set_block_at(int x, int y, int z, BlockType block);
+	bool get_block_at(int x, int y, int z, BlockType& block);
+	bool set_block_at(int x, int y, int z, BlockType  block);
 	void render();
 
 };
