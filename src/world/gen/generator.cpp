@@ -1,7 +1,9 @@
 #include "generator.hpp"
 
+#include <random>
+
 WorldGenerator::WorldGenerator()
-: noise() {
+: noise(std::random_device{}) {
 
 }
 
