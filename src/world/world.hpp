@@ -4,10 +4,23 @@
 
 #pragma once
 
-#include <array>
+#include <unordered_map>
+
+#include <glm/glm.hpp>
 
 #include <world/blocks.hpp>
 #include <world/chunk.hpp>
+
+struct Vec3KeyUtils {
+
+	size_t operator() (const glm::vec3& k) const {
+        return std::hash<int>()(k.x) ^ (2 * std::hash<int>()(k.y)) ^ (4 * std::hash<int>()(k.z));
+    }
+
+	bool operator()(const glm::vec3& a, const glm::vec3& b) const {
+        return a.x == b.x && a.y == b.y && a.z == b.z;
+    }
+};
 
 class World {
 
@@ -15,7 +28,7 @@ private:
 	static const int
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
-	std::array<Chunk*, WORLD_WIDTH * WORLD_WIDTH * WORLD_HEIGHT> chunks;
+	std::unordered_map<glm::vec3, Chunk*, Vec3KeyUtils, Vec3KeyUtils> chunks;
 	Chunk* get_chunk_containing_coords(int x, int y, int z);
 
 public:
