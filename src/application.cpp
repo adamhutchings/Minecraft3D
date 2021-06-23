@@ -60,6 +60,9 @@ void Application::mainloop() {
 
 	while ( (!glfwWindowShouldClose(wn)) && (!closing) ) {
 
+		// We want each frame to last for exactly 1/50th second,
+		// so capture the starting time so we can sleep for the
+		// needed amount of time at the end of the frame.
 		auto start_of_frame = std::chrono::steady_clock::now();
 
 		input::do_movement();
