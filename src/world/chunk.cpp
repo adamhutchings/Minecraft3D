@@ -89,17 +89,17 @@ BlockType& Chunk::at(int x, int y, int z) {
 bool Chunk::block_borders_air(int i, int j, int k, Side side, World* world) {
 	switch (side) {
 		case UP:
-			return world->block_at(i, j + 1, k) == AIR_BLOCK;
+			return world->get_block_at(i, j + 1, k) == AIR_BLOCK;
 		case DOWN:
-			return world->block_at(i, j - 1, k) == AIR_BLOCK;
+			return world->get_block_at(i, j - 1, k) == AIR_BLOCK;
 		case WEST:
-			return world->block_at(i - 1, j, k) == AIR_BLOCK;
+			return world->get_block_at(i - 1, j, k) == AIR_BLOCK;
 		case EAST:
-			return world->block_at(i + 1, j, k) == AIR_BLOCK;
+			return world->get_block_at(i + 1, j, k) == AIR_BLOCK;
 		case NORTH:
-			return world->block_at(i, j, k - 1) == AIR_BLOCK;
+			return world->get_block_at(i, j, k - 1) == AIR_BLOCK;
 		case SOUTH:
-			return world->block_at(i, j, k + 1) == AIR_BLOCK;
+			return world->get_block_at(i, j, k + 1) == AIR_BLOCK;
 	}
 }
 

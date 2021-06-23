@@ -116,7 +116,7 @@ bool Camera::get_block_break_location(int& x, int& y, int &z) {
 			last_checked_y = (int) cy,
 			last_checked_z = (int) cz;
 
-			auto block = global_app->world->block_at(
+			auto block = global_app->world->get_block_at(
 				last_checked_x, last_checked_y, last_checked_z
 			);
 
