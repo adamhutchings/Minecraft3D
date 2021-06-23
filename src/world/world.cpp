@@ -9,7 +9,7 @@ World::World() {
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
 			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				at(x, y, z) = Chunk(x, y, z, generator);
+				chunks.at(y * WORLD_WIDTH * WORLD_WIDTH + x * WORLD_WIDTH + z) = new Chunk(x, y, z, generator);
 			}
 		}
 	}
@@ -17,15 +17,23 @@ World::World() {
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
 			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				at(x, y, z).update_mesh(this);
+				chunk_at(x, y, z)->update_mesh(this);
 			}
 		}
 	}
 
 }
 
-Chunk& World::at(int x, int y, int z) {
+Chunk* World::chunk_at(int x, int y, int z) {
+
+	if (
+		x < 0 || x >= WORLD_WIDTH  ||
+		y < 0 || y >= WORLD_HEIGHT ||
+		z < 0 || z >= WORLD_WIDTH
+	) return nullptr;
+
 	return chunks.at(y * WORLD_WIDTH * WORLD_WIDTH + x * WORLD_WIDTH + z);
+
 }
 
 BlockType World::block_at(int x, int y, int z) {
@@ -35,17 +43,17 @@ BlockType World::block_at(int x, int y, int z) {
 	||  (y >= WORLD_HEIGHT * CHUNK_SIZE)
 	||  (z >= WORLD_WIDTH  * CHUNK_SIZE)
 	) return AIR_BLOCK;
-	return at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
-	      .at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+	return  chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
+	        ->    at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
 }
 
 void World::set_block_at(int x, int y, int z, BlockType block) {
 	// TODO TODO TODO error checkings
-	at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
-	.at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
+	  chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
+	  ->    at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
 	 = block;
 
-	at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE).update_mesh(this);
+	chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)->update_mesh(this);
 
 }
 
@@ -54,7 +62,7 @@ void World::render() {
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
 			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				at(x, y, z).render();
+				chunk_at(x, y, z)->render();
 			}
 		}
 	}
