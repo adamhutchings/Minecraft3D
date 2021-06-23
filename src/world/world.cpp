@@ -1,5 +1,7 @@
 #include "world.hpp"
 
+#include <cmath>
+
 #include <world/gen/generator.hpp>
 
 World::World() {
@@ -24,6 +26,18 @@ World::World() {
 
 }
 
+Chunk* World::get_chunk_containing_coords(int x, int y, int z) {
+
+	return get_chunk_at(
+
+		std::floor( (float) x / CHUNK_SIZE ),
+		std::floor( (float) y / CHUNK_SIZE ),
+		std::floor( (float) z / CHUNK_SIZE )
+
+	);
+
+}
+
 Chunk* World::get_chunk_at(int x, int y, int z) {
 
 	if (
@@ -43,17 +57,17 @@ BlockType World::get_block_at(int x, int y, int z) {
 	||  (y >= WORLD_HEIGHT * CHUNK_SIZE)
 	||  (z >= WORLD_WIDTH  * CHUNK_SIZE)
 	) return AIR_BLOCK;
-	return  get_chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
-	        ->        at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+	return  get_chunk_containing_coords(x, y, z)
+	        ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
 }
 
 void World::set_block_at(int x, int y, int z, BlockType block) {
 	// TODO TODO TODO error checkings
-	  get_chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)
-	  ->        at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
+	  get_chunk_containing_coords(x, y, z)
+	  ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
 	 = block;
 
-	get_chunk_at(x / CHUNK_SIZE, y / CHUNK_SIZE, z / CHUNK_SIZE)->update_mesh(this);
+	get_chunk_containing_coords(x, y, z)->update_mesh(this);
 
 }
 

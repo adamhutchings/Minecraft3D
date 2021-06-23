@@ -16,6 +16,7 @@ private:
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
 	std::array<Chunk*, WORLD_WIDTH * WORLD_WIDTH * WORLD_HEIGHT> chunks;
+	Chunk* get_chunk_containing_coords(int x, int y, int z);
 
 public:
 	World();
