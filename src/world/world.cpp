@@ -62,12 +62,13 @@ BlockType World::get_block_at(int x, int y, int z) {
 }
 
 void World::set_block_at(int x, int y, int z, BlockType block) {
-	// TODO TODO TODO error checkings
-	  get_chunk_containing_coords(x, y, z)
-	  ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE)
-	 = block;
 
-	get_chunk_containing_coords(x, y, z)->update_mesh(this);
+	auto chunk = get_chunk_containing_coords(x, y, z);
+
+	if (chunk != nullptr) {
+		chunk->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE) = block;
+		chunk->update_mesh(this);
+	}
 
 }
 
