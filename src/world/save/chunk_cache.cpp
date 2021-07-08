@@ -1,6 +1,6 @@
 #include "chunk_cache.hpp"
 
-CachedChunk::CachedChunk(Chunk& chunk)
+CachedChunk::CachedChunk(Chunk* chunk)
 // Reasonable estimate for now
 : data(100) {
 
@@ -8,7 +8,7 @@ CachedChunk::CachedChunk(Chunk& chunk)
 	int length;
 	BlockType type;
 
-	for (auto block : chunk.blocks) {
+	for (auto block : chunk->blocks) {
 
 		if (block != type) {
 			
