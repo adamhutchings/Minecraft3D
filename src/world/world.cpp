@@ -4,9 +4,8 @@
 
 #include <world/gen/generator.hpp>
 
-World::World() {
-
-	WorldGenerator generator{};
+World::World()
+: generator {} {
 
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
@@ -88,5 +87,43 @@ void World::render() {
 			}
 		}
 	}
+
+}
+
+bool World::unload_chunk(int x, int y, int z) {
+
+	auto vec = glm::vec3(x, y, z);
+
+	auto chunk = this->get_chunk_at(x, y, z);
+	if (chunk == nullptr) return false;
+
+	// Check if the chunk is already unloaded.
+	if (unloaded_chunks.find(vec) != unloaded_chunks.end()) {
+		return false;
+	}
+
+	unloaded_chunks[vec] = CachedChunk(loaded_chunks[vec]);
+	delete loaded_chunks[vec];
+	loaded_chunks.erase(vec);
+	return true;
+
+}
+
+bool World::load_chunk(int x, int y, int z) {
+
+	auto vec = glm::vec3(x, y, z);
+
+	if (this->get_chunk_at(x, y, z) != nullptr) {
+		// Chunk is already loaded.
+		return false;
+	}
+
+	if (unloaded_chunks.find(vec) == unloaded_chunks.end()) {
+		loaded_chunks[vec] = new Chunk(x, y, z, generator);
+	} else {
+		loaded_chunks[vec] = new Chunk();
+		unloaded_chunks[vec].read(loaded_chunks[vec]);
+	}
+	return true;
 
 }

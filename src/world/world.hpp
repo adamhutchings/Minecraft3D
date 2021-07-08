@@ -10,6 +10,7 @@
 
 #include <world/blocks.hpp>
 #include <world/chunk.hpp>
+#include <world/save/chunk_cache.hpp>
 
 struct Vec3KeyUtils {
 
@@ -25,11 +26,21 @@ struct Vec3KeyUtils {
 class World {
 
 private:
+	WorldGenerator generator;
 	static const int
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
-	std::unordered_map<glm::vec3, Chunk*, Vec3KeyUtils, Vec3KeyUtils> loaded_chunks;
+	std::unordered_map<glm::vec3, Chunk*,      Vec3KeyUtils, Vec3KeyUtils> loaded_chunks;
+	std::unordered_map<glm::vec3, CachedChunk, Vec3KeyUtils, Vec3KeyUtils> unloaded_chunks;
 	Chunk* get_chunk_containing_coords(int x, int y, int z);
+	// Take a chunk out of the loaded chunks and save it into
+	// the unloaded chunks. Return whether the operation
+	// succeeded.
+	bool unload_chunk(int x, int y, int z);
+	// Either take a chunk out of the unloaded chunks and load
+	// its data into the world or generate a fresh new chunk.
+	// Return whether the op succeeded.
+	bool   load_chunk(int x, int y, int z);
 
 public:
 	World();
