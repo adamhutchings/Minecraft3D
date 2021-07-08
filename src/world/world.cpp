@@ -11,7 +11,7 @@ World::World() {
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
 			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				chunks[glm::vec3(x, y, z)] = new Chunk(x, y, z, generator);
+				loaded_chunks[glm::vec3(x, y, z)] = new Chunk(x, y, z, generator);
 			}
 		}
 	}
@@ -42,8 +42,8 @@ Chunk* World::get_chunk_at(int x, int y, int z) {
 
 	glm::vec3 vec(x, y, z);
 
-	if (chunks.find(vec) != chunks.end()) {
-		return chunks[vec];
+	if (loaded_chunks.find(vec) != loaded_chunks.end()) {
+		return loaded_chunks[vec];
 	}
 
 	return nullptr;
