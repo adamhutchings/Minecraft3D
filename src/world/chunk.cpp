@@ -67,15 +67,13 @@ std::vector<float> get_face_vertices(
 
 Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
 
-    cx = x, cy = y, cz = z;
-
 	for (int i = 0; i < CHUNK_SIZE; ++i) {
 		for (int j = 0; j < CHUNK_SIZE; ++j) {
 			for (int k = 0; k < CHUNK_SIZE; ++k) {
 				this->at(i, j, k) = generator.get_block_at(
-                    cx * CHUNK_SIZE + i,
-                    cy * CHUNK_SIZE + j,
-                    cz * CHUNK_SIZE + k
+                    x * CHUNK_SIZE + i,
+                    y * CHUNK_SIZE + j,
+                    z * CHUNK_SIZE + k
                 );
 			}
 		}
@@ -83,8 +81,7 @@ Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
 
 }
 
-Chunk::Chunk(int x, int y, int z, CachedChunk& chunk) {
-    cx = x, cy = y, cz = z;
+Chunk::Chunk(CachedChunk& chunk) {
     chunk.read(this);
 }
 
@@ -122,7 +119,7 @@ bool Chunk::block_borders_air(int i, int j, int k, Side side, World* world) {
 
 }
 
-void Chunk::update_mesh(World* world) {
+void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
 
 	std::vector<float> vertices;
     std::vector<int> indices;

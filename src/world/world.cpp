@@ -18,7 +18,7 @@ World::World()
 	for (int x = 0; x < WORLD_WIDTH; ++x) {
 		for (int y = 0; y < WORLD_HEIGHT; ++y) {
 			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				get_chunk_at(x, y, z)->update_mesh(this);
+				get_chunk_at(x, y, z)->update_mesh(this, x, y, z);
 			}
 		}
 	}
@@ -71,7 +71,7 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 
 	if (chunk != nullptr) {
 		chunk->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE) = block;
-		chunk->update_mesh(this);
+		chunk->update_mesh(this, x, y, z);
 	}
 
 	return chunk != nullptr;
@@ -121,9 +121,12 @@ bool World::load_chunk(int x, int y, int z) {
 	if (unloaded_chunks.find(vec) == unloaded_chunks.end()) {
 		loaded_chunks[vec] = new Chunk(x, y, z, generator);
 	} else {
-		loaded_chunks[vec] = new Chunk();
-		unloaded_chunks[vec].read(loaded_chunks[vec]);
+		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
+		loaded_chunks.erase(vec);
 	}
+
+	loaded_chunks[vec]->update_mesh(this, x, y, z);
+
 	return true;
 
 }
