@@ -41,7 +41,7 @@ Application::Application() {
 	player = std::make_unique<Player>();
 
 	player->camera.pitch(-60.0f, ViewMode::SET);
-	player->camera.position(-1, -1, -1, ViewMode::SET);
+	player->camera.position(0, 75, 0, ViewMode::SET);
 	player->camera.yaw(30.0f, ViewMode::SET);
 
 	glEnable(GL_DEPTH_TEST);
@@ -65,6 +65,8 @@ void Application::mainloop() {
 		// needed amount of time at the end of the frame.
 		auto start_of_frame = std::chrono::steady_clock::now();
 
+		world->load_unload_one();
+
 		input::do_movement();
 
 		// Update camera position
@@ -85,6 +87,7 @@ void Application::close() {
 }
 
 Application::~Application() {
+	world->shutdown_update_thread();
 	tex::unload();
 	shader_destroy();
 	glfwDestroyWindow(wn);
