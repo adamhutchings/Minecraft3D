@@ -147,12 +147,8 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 
 void World::render() {
 	
-	for (int x = 0; x < WORLD_WIDTH; ++x) {
-		for (int y = 0; y < WORLD_HEIGHT; ++y) {
-			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				get_chunk_at(x, y, z)->render();
-			}
-		}
+	for (auto cp : loaded_chunks) {
+		cp.second->render();
 	}
 
 }
@@ -189,7 +185,7 @@ bool World::load_chunk(int x, int y, int z) {
 		loaded_chunks[vec] = new Chunk(x, y, z, generator);
 	} else {
 		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
-		loaded_chunks.erase(vec);
+		unloaded_chunks.erase(vec);
 	}
 
 	loaded_chunks[vec]->update_mesh(this, x, y, z);
