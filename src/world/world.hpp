@@ -68,6 +68,10 @@ private:
 
 	static const int RENDER_DISTANCE = 8; // chunks
 
+	// get_block_at, etc. will be way faster with this.
+	Chunk* cached_chunk = nullptr;
+	int cc_x, cc_y, cc_z;
+
 public:
 	World();
 	void shutdown_update_thread();

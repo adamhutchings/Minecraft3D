@@ -18,6 +18,12 @@ Application::Application() {
 	// OpenGL 4.1
 	this->init_context(4, 1);
 
+	player = std::make_unique<Player>();
+
+	player->camera.pitch(-60.0f, ViewMode::SET);
+	player->camera.position(0, 75, 0, ViewMode::SET);
+	player->camera.yaw(30.0f, ViewMode::SET);
+
 	// TODO - also check for error
 	wn = glfwCreateWindow(500, 500, "Minecraft", nullptr, nullptr);
 	glfwMakeContextCurrent(wn);
@@ -38,11 +44,6 @@ Application::Application() {
 	GAME_SHADER->register_uniform("game_matrix");
 
 	world = std::make_unique<World>();
-	player = std::make_unique<Player>();
-
-	player->camera.pitch(-60.0f, ViewMode::SET);
-	player->camera.position(0, 75, 0, ViewMode::SET);
-	player->camera.yaw(30.0f, ViewMode::SET);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

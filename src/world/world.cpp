@@ -68,7 +68,7 @@ World::World()
 , chunk_queue_updater {
 	[this](){
 		while (this->chunk_updater_running) {
-			std::this_thread::sleep_for(std::chrono::seconds(10));
+			std::this_thread::sleep_for(std::chrono::seconds(2));
 			chunk_queue_update_function(this);
 		}
 	}
@@ -106,28 +106,36 @@ Chunk* World::get_chunk_containing_coords(int x, int y, int z) {
 
 Chunk* World::get_chunk_at(int x, int y, int z) {
 
-	glm::vec3 vec(x, y, z);
+	glm::vec3 vec;
 
-	if (loaded_chunks.find(vec) != loaded_chunks.end()) {
-		return loaded_chunks[vec];
+	if (x == cc_x && y == cc_y && z == cc_z) {
+		goto end;
 	}
 
-	return nullptr;
+	vec = glm::vec3(x, y, z);
+	cc_x = x, cc_y = y, cc_z = z;
+
+	if (loaded_chunks.find(vec) != loaded_chunks.end()) {
+		cached_chunk = loaded_chunks[vec];
+	} else {
+		cached_chunk = nullptr;
+	}
+
+end:
+	return cached_chunk;
 
 }
 
 bool World::get_block_at(int x, int y, int z, BlockType& block) {
 
-	if ( (x < 0) || (y < 0) || (z < 0) ||
-		(x >= WORLD_WIDTH  * CHUNK_SIZE)
-	||  (y >= WORLD_HEIGHT * CHUNK_SIZE)
-	||  (z >= WORLD_WIDTH  * CHUNK_SIZE)
-	) {
-		block = AIR_BLOCK;
-		return false;
-	}
+	auto chunk = get_chunk_containing_coords(x, y, z);
+	if (chunk == nullptr) return false;
 
-	block = get_chunk_containing_coords(x, y, z) ->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE);
+	block = chunk->at(
+		((x < 0) * 16 + x % CHUNK_SIZE) % CHUNK_SIZE,
+		((y < 0) * 16 + y % CHUNK_SIZE) % CHUNK_SIZE,
+		((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
+	);
 	return true;
 
 }
@@ -137,7 +145,11 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 	auto chunk = get_chunk_containing_coords(x, y, z);
 
 	if (chunk != nullptr) {
-		chunk->at(x % CHUNK_SIZE, y % CHUNK_SIZE, z % CHUNK_SIZE) = block;
+		chunk->at(
+			((x < 0) * 16 + x % CHUNK_SIZE) % CHUNK_SIZE,
+			((y < 0) * 16 + y % CHUNK_SIZE) % CHUNK_SIZE,
+			((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
+		) = block;
 		chunk->update_mesh(this, x, y, z);
 	}
 
