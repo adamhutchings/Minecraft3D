@@ -107,12 +107,13 @@ Chunk* World::get_chunk_at(int x, int y, int z) {
 
 	glm::vec3 vec;
 
-	if (x == cc_x && y == cc_y && z == cc_z) {
+	if (x == cc_x && y == cc_y && z == cc_z && cached_chunk_exists) {
 		goto end;
 	}
 
 	vec = glm::vec3(x, y, z);
 	cc_x = x, cc_y = y, cc_z = z;
+	cached_chunk_exists = true;
 
 	if (loaded_chunks.find(vec) != loaded_chunks.end()) {
 		cached_chunk = loaded_chunks[vec];
@@ -183,23 +184,21 @@ bool World::unload_chunk(int x, int y, int z) {
 
 }
 
-bool World::load_chunk(int x, int y, int z) {
+bool World::load_chunk(glm::vec3 vec) {
 
-	auto vec = glm::vec3(x, y, z);
-
-	if (this->get_chunk_at(x, y, z) != nullptr) {
+	if (this->get_chunk_at(vec.x, vec.y, vec.z) != nullptr) {
 		// Chunk is already loaded.
 		return false;
 	}
 
 	if (unloaded_chunks.find(vec) == unloaded_chunks.end()) {
-		loaded_chunks[vec] = new Chunk(x, y, z, generator);
+		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
 	} else {
 		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
 		unloaded_chunks.erase(vec);
 	}
 
-	loaded_chunks[vec]->update_mesh(this, x, y, z);
+	loaded_chunks[vec]->update_mesh(this, vec.x, vec.y, vec.z);
 
 	return true;
 
@@ -217,7 +216,7 @@ void World::load_unload_one() {
 
 	if (!chunks_to_load.empty()) {
 		glm::vec3 chunk = chunks_to_load[chunks_to_load.size() - 1];
-		this->load_chunk(chunk.x, chunk.y, chunk.z);
+		this->load_chunk(chunk);
 		chunks_to_load.pop_back();
 	}
 

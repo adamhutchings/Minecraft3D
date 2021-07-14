@@ -45,7 +45,7 @@ private:
 	// Either take a chunk out of the unloaded chunks and load
 	// its data into the world or generate a fresh new chunk.
 	// Return whether the op succeeded.
-	bool   load_chunk(int x, int y, int z);
+	bool   load_chunk(glm::vec3 vec);
 
 	std::vector<glm::vec3> chunks_to_load,
 	                       chunks_to_unload;
@@ -71,6 +71,7 @@ private:
 	// get_block_at, etc. will be way faster with this.
 	Chunk* cached_chunk = nullptr;
 	int cc_x, cc_y, cc_z;
+	bool cached_chunk_exists = false;
 
 public:
 	World();
