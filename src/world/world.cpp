@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <cmath>
-#include <iostream>
 
 #include <application.hpp>
 #include <world/gen/generator.hpp>
@@ -213,8 +212,6 @@ void World::shutdown_update_thread() {
 
 void World::load_unload_one() {
 
-	auto start = std::chrono::steady_clock::now();
-
 	if (chunk_list_update_state != ChunkQueueUpdateState::S_FREE) return;
 	chunk_list_update_state = ChunkQueueUpdateState::S_WORLD;
 
@@ -231,9 +228,5 @@ void World::load_unload_one() {
 	}
 
 	chunk_list_update_state = ChunkQueueUpdateState::S_FREE;
-
-	auto end = std::chrono::steady_clock::now();
-
-	std::cout << std::chrono::duration<double, std::milli>(end - start).count() << "\n";
 
 }
