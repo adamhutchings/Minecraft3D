@@ -150,7 +150,11 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 			((y < 0) * 16 + y % CHUNK_SIZE) % CHUNK_SIZE,
 			((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
 		) = block;
-		chunk->update_mesh(this, x, y, z);
+		chunk->update_mesh(this,
+			std::floor( (float) x / CHUNK_SIZE ),
+			std::floor( (float) y / CHUNK_SIZE ),
+			std::floor( (float) z / CHUNK_SIZE )
+		);
 	}
 
 	return chunk != nullptr;
@@ -199,6 +203,27 @@ bool World::load_chunk(glm::vec3 vec) {
 	}
 
 	loaded_chunks[vec]->update_mesh(this, vec.x, vec.y, vec.z);
+
+	// Check each side
+	Chunk* chunk;
+	if ( (chunk = this->get_chunk_at(vec.x + 1, vec.y, vec.z) ) ) {
+		chunk->update_mesh(this, vec.x + 1, vec.y, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x - 1, vec.y, vec.z) ) ) {
+		chunk->update_mesh(this, vec.x - 1, vec.y, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y + 1, vec.z) ) ) {
+		chunk->update_mesh(this, vec.x, vec.y + 1, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y - 1, vec.z) ) ) {
+		chunk->update_mesh(this, vec.x, vec.y - 1, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z + 1) ) ) {
+		chunk->update_mesh(this, vec.x, vec.y, vec.z + 1);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z - 1) ) ) {
+		chunk->update_mesh(this, vec.x, vec.y, vec.z - 1);
+	}
 
 	return true;
 
