@@ -34,8 +34,8 @@ private:
 	static const int
 		WORLD_HEIGHT = 4, // in chunks
 		WORLD_WIDTH  = 8; // in chunks
-	std::unordered_map<glm::vec3, Chunk*,      Vec3KeyUtils, Vec3KeyUtils> loaded_chunks;
-	std::unordered_map<glm::vec3, CachedChunk, Vec3KeyUtils, Vec3KeyUtils> unloaded_chunks;
+	std::unordered_map<glm::vec3, Chunk*,       Vec3KeyUtils, Vec3KeyUtils> loaded_chunks;
+	std::unordered_map<glm::vec3, CachedChunk*, Vec3KeyUtils, Vec3KeyUtils> unloaded_chunks;
 
 	Chunk* get_chunk_containing_coords(int x, int y, int z);
 	// Take a chunk out of the loaded chunks and save it into

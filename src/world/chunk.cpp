@@ -81,8 +81,8 @@ Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
 
 }
 
-Chunk::Chunk(CachedChunk& chunk) {
-    chunk.read(this);
+Chunk::Chunk(CachedChunk* chunk) {
+    chunk->read(this);
 }
 
 BlockType& Chunk::at(int x, int y, int z) {
@@ -185,10 +185,14 @@ void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
         }
     }
 
-   	chunk_mesh = std::make_unique<Mesh>(vertices, indices, texcoords, grassflags);
+    if (vertices.size() > 0)
+   	    chunk_mesh = std::make_unique<Mesh>(vertices, indices, texcoords, grassflags);
+    else
+        chunk_mesh = nullptr;
 
 }
 
 void Chunk::render() {
-	chunk_mesh->draw();
+    if (chunk_mesh != nullptr)
+	    chunk_mesh->draw();
 }

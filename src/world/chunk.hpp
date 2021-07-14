@@ -30,7 +30,7 @@ private:
 public:
 	Chunk() = default;
 	// Read this chunk from a cache
-	Chunk(CachedChunk&);
+	Chunk(CachedChunk*);
 	Chunk(int x, int y, int z, WorldGenerator generator);
 	// only do this when the blocks in the chunk are changed
 	// cx, cy, cz are chunk coordinates

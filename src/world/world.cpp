@@ -67,8 +67,8 @@ World::World()
 , chunk_queue_updater {
 	[this](){
 		while (this->chunk_updater_running) {
-			std::this_thread::sleep_for(std::chrono::seconds(2));
 			chunk_queue_update_function(this);
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 	}
 } {
@@ -181,8 +181,8 @@ bool World::unload_chunk(int x, int y, int z) {
 		return false;
 	}
 
-	unloaded_chunks[vec] = CachedChunk(loaded_chunks[vec]);
-	delete loaded_chunks[vec];
+	unloaded_chunks[vec] = new CachedChunk(chunk);
+	delete chunk;
 	loaded_chunks.erase(vec);
 	return true;
 
@@ -199,6 +199,7 @@ bool World::load_chunk(glm::vec3 vec) {
 		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
 	} else {
 		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
+		delete unloaded_chunks[vec];
 		unloaded_chunks.erase(vec);
 	}
 
