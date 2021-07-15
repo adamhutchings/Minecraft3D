@@ -73,22 +73,6 @@ World::World()
 	}
 } {
 
-	for (int x = 0; x < WORLD_WIDTH; ++x) {
-		for (int y = 0; y < WORLD_HEIGHT; ++y) {
-			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				loaded_chunks[glm::vec3(x, y, z)] = new Chunk(x, y, z, generator);
-			}
-		}
-	}
-
-	for (int x = 0; x < WORLD_WIDTH; ++x) {
-		for (int y = 0; y < WORLD_HEIGHT; ++y) {
-			for (int z = 0; z < WORLD_WIDTH; ++z) {
-				get_chunk_at(x, y, z)->update_mesh(this, x, y, z);
-			}
-		}
-	}
-
 }
 
 Chunk* World::get_chunk_containing_coords(int x, int y, int z) {
