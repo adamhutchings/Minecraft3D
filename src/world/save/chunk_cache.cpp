@@ -5,15 +5,16 @@ CachedChunk::CachedChunk(Chunk* chunk)
 : data(100) {
 
 	// Used in the inner loop
-	int length;
+	int length = 0;
 	BlockType type;
 
 	for (auto block : chunk->blocks) {
 
-		if (block != type) {
+		if ( (block != type) || (length == 0) ) {
 			
 			// Save the data in the buffer
-			data.push_back( { length, type } );
+			if (length != 0)
+				data.push_back( { length, type } );
 
 			type = block;
 			length = 0; // we always increment at the end of the loop
@@ -36,8 +37,7 @@ void CachedChunk::read(Chunk* into) {
 	for (auto run : this->data) {
 
 		while (run.first--) {
-			if (index >= CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) return;
-			into->blocks[index++] = run.second;
+			into->blocks.at(index++) = run.second;
 		}
 
 	}
