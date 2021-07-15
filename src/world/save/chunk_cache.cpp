@@ -36,6 +36,7 @@ void CachedChunk::read(Chunk* into) {
 	for (auto run : this->data) {
 
 		while (run.first--) {
+			if (index >= CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) return;
 			into->blocks[index++] = run.second;
 		}
 
