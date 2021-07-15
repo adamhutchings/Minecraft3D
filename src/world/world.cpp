@@ -18,15 +18,19 @@ void chunk_queue_update_function(World* world) {
 
 	auto& cam = global_app->player->camera;
 
+	int x = ( (float) cam.x() ) / CHUNK_SIZE,
+		y = ( (float) cam.y() ) / CHUNK_SIZE,
+		z = ( (float) cam.z() ) / CHUNK_SIZE;
+
+	int worldx = x - World::RENDER_DISTANCE / 2;
+	int worldy = y - World::RENDER_DISTANCE / 2;
+	int worldz = z - World::RENDER_DISTANCE / 2;
+
 	// Calculating chunks to load
 	// Only chunks in this cube have a chance of being loaded.
 	for (int x = 0; x < World::RENDER_DISTANCE; ++x) {
 		for (int y = 0; y < World::RENDER_DISTANCE; ++y) {
 			for (int z = 0; z < World::RENDER_DISTANCE; ++z) {
-
-				int worldx = ( ( (float) cam.x() ) / CHUNK_SIZE) - World::RENDER_DISTANCE / 2;
-				int worldy = ( ( (float) cam.y() ) / CHUNK_SIZE) - World::RENDER_DISTANCE / 2;
-				int worldz = ( ( (float) cam.z() ) / CHUNK_SIZE) - World::RENDER_DISTANCE / 2;
 
 				auto chunkpos = glm::vec3(worldx + x, worldy + y, worldz + z);
 				
@@ -43,10 +47,6 @@ void chunk_queue_update_function(World* world) {
 	for (auto chunk : world->loaded_chunks) {
 
 		bool should_be_loaded = true;
-
-		int x = ( (float) cam.x() ) / CHUNK_SIZE,
-		    y = ( (float) cam.y() ) / CHUNK_SIZE,
-		    z = ( (float) cam.z() ) / CHUNK_SIZE;
 
 		should_be_loaded &= abs(x - chunk.first.x) < World::RENDER_DISTANCE / 2;
 		should_be_loaded &= abs(y - chunk.first.y) < World::RENDER_DISTANCE / 2;
