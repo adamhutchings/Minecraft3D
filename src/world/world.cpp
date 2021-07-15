@@ -199,22 +199,22 @@ bool World::load_chunk(glm::vec3 vec) {
 	// Check each side
 	Chunk* chunk;
 	if ( (chunk = this->get_chunk_at(vec.x + 1, vec.y, vec.z) ) ) {
-		chunk->update_mesh(this, vec.x + 1, vec.y, vec.z);
+		  chunk->update_mesh(  this, vec.x + 1, vec.y, vec.z);
 	}
 	if ( (chunk = this->get_chunk_at(vec.x - 1, vec.y, vec.z) ) ) {
-		chunk->update_mesh(this, vec.x - 1, vec.y, vec.z);
+		  chunk->update_mesh(  this, vec.x - 1, vec.y, vec.z);
 	}
 	if ( (chunk = this->get_chunk_at(vec.x, vec.y + 1, vec.z) ) ) {
-		chunk->update_mesh(this, vec.x, vec.y + 1, vec.z);
+		  chunk->update_mesh(  this, vec.x, vec.y + 1, vec.z);
 	}
 	if ( (chunk = this->get_chunk_at(vec.x, vec.y - 1, vec.z) ) ) {
-		chunk->update_mesh(this, vec.x, vec.y - 1, vec.z);
+		  chunk->update_mesh(  this, vec.x, vec.y - 1, vec.z);
 	}
 	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z + 1) ) ) {
-		chunk->update_mesh(this, vec.x, vec.y, vec.z + 1);
+		  chunk->update_mesh(  this, vec.x, vec.y, vec.z + 1);
 	}
 	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z - 1) ) ) {
-		chunk->update_mesh(this, vec.x, vec.y, vec.z - 1);
+		  chunk->update_mesh(  this, vec.x, vec.y, vec.z - 1);
 	}
 
 	return true;
