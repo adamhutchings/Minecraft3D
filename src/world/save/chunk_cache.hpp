@@ -27,8 +27,6 @@ private:
 
 public:
 
-	CachedChunk() = default;
-
 	// Read a chunk's data. This does NOT affect the chunk
 	// itself.
 	CachedChunk(Chunk*);
