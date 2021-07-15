@@ -168,6 +168,13 @@ bool World::unload_chunk(int x, int y, int z) {
 	unloaded_chunks[vec] = new CachedChunk(chunk);
 	delete chunk;
 	loaded_chunks.erase(vec);
+
+	if (cached_chunk_exists) {
+		if (cc_x == x && cc_y == y && cc_z == z) {
+			cached_chunk_exists = false;
+		}
+	}
+
 	return true;
 
 }
