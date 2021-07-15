@@ -162,7 +162,7 @@ bool World::unload_chunk(int x, int y, int z) {
 
 	// Check if the chunk is already unloaded.
 	if (unloaded_chunks.find(vec) != unloaded_chunks.end()) {
-		return false;
+		delete unloaded_chunks[vec];
 	}
 
 	unloaded_chunks[vec] = new CachedChunk(chunk);
