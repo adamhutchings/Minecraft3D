@@ -10,7 +10,9 @@ CachedChunk::CachedChunk(Chunk* chunk)
 
 	for (auto block : chunk->blocks) {
 
-		if ( (block != type) || (length == 0) ) {
+		// Check if a new block is starting, OR the special condition that
+		// this is the first block we've checked.
+		if (block != type || (data.size() == 0 && length == 0)) {
 			
 			// Save the data in the buffer
 			if (length != 0)
