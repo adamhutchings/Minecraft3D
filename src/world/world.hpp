@@ -73,6 +73,8 @@ private:
 	int cc_x, cc_y, cc_z;
 	bool cached_chunk_exists = false;
 
+	void update_neighboring_chunks(glm::vec3 vec);
+
 public:
 	World();
 	void shutdown_update_thread();

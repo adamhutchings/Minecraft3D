@@ -153,6 +153,31 @@ void World::render() {
 
 }
 
+void World::update_neighboring_chunks(glm::vec3 vec) {
+
+	// Check each side
+	Chunk* chunk;
+	if ( (chunk = this->get_chunk_at(vec.x + 1, vec.y, vec.z) ) ) {
+		  chunk->update_mesh(  this, vec.x + 1, vec.y, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x - 1, vec.y, vec.z) ) ) {
+		  chunk->update_mesh(  this, vec.x - 1, vec.y, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y + 1, vec.z) ) ) {
+		  chunk->update_mesh(  this, vec.x, vec.y + 1, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y - 1, vec.z) ) ) {
+		  chunk->update_mesh(  this, vec.x, vec.y - 1, vec.z);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z + 1) ) ) {
+		  chunk->update_mesh(  this, vec.x, vec.y, vec.z + 1);
+	}
+	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z - 1) ) ) {
+		  chunk->update_mesh(  this, vec.x, vec.y, vec.z - 1);
+	}
+
+}
+
 bool World::unload_chunk(int x, int y, int z) {
 
 	auto vec = glm::vec3(x, y, z);
@@ -174,6 +199,8 @@ bool World::unload_chunk(int x, int y, int z) {
 			cached_chunk_exists = false;
 		}
 	}
+
+	update_neighboring_chunks(vec);
 
 	return true;
 
@@ -197,25 +224,7 @@ bool World::load_chunk(glm::vec3 vec) {
 	loaded_chunks[vec]->update_mesh(this, vec.x, vec.y, vec.z);
 
 	// Check each side
-	Chunk* chunk;
-	if ( (chunk = this->get_chunk_at(vec.x + 1, vec.y, vec.z) ) ) {
-		  chunk->update_mesh(  this, vec.x + 1, vec.y, vec.z);
-	}
-	if ( (chunk = this->get_chunk_at(vec.x - 1, vec.y, vec.z) ) ) {
-		  chunk->update_mesh(  this, vec.x - 1, vec.y, vec.z);
-	}
-	if ( (chunk = this->get_chunk_at(vec.x, vec.y + 1, vec.z) ) ) {
-		  chunk->update_mesh(  this, vec.x, vec.y + 1, vec.z);
-	}
-	if ( (chunk = this->get_chunk_at(vec.x, vec.y - 1, vec.z) ) ) {
-		  chunk->update_mesh(  this, vec.x, vec.y - 1, vec.z);
-	}
-	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z + 1) ) ) {
-		  chunk->update_mesh(  this, vec.x, vec.y, vec.z + 1);
-	}
-	if ( (chunk = this->get_chunk_at(vec.x, vec.y, vec.z - 1) ) ) {
-		  chunk->update_mesh(  this, vec.x, vec.y, vec.z - 1);
-	}
+	update_neighboring_chunks(vec);
 
 	return true;
 
