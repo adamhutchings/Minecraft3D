@@ -18,13 +18,13 @@ void chunk_queue_update_function(World* world) {
 
 	auto& cam = global_app->player->camera;
 
-	int x = ( (float) cam.x() ) / CHUNK_SIZE,
-		y = ( (float) cam.y() ) / CHUNK_SIZE,
-		z = ( (float) cam.z() ) / CHUNK_SIZE;
+	int camx = ( (float) cam.x() ) / CHUNK_SIZE,
+		camy = ( (float) cam.y() ) / CHUNK_SIZE,
+		camz = ( (float) cam.z() ) / CHUNK_SIZE;
 
-	int worldx = x - World::RENDER_DISTANCE / 2;
-	int worldy = y - World::RENDER_DISTANCE / 2;
-	int worldz = z - World::RENDER_DISTANCE / 2;
+	int worldx = camx - World::RENDER_DISTANCE / 2;
+	int worldy = camy - World::RENDER_DISTANCE / 2;
+	int worldz = camz - World::RENDER_DISTANCE / 2;
 
 	// Calculating chunks to load
 	// Only chunks in this cube have a chance of being loaded.
@@ -48,12 +48,12 @@ void chunk_queue_update_function(World* world) {
 
 		bool should_be_loaded = true;
 
-		should_be_loaded &= abs(x - chunk.first.x) < World::RENDER_DISTANCE / 2;
-		should_be_loaded &= abs(y - chunk.first.y) < World::RENDER_DISTANCE / 2;
-		should_be_loaded &= abs(z - chunk.first.z) < World::RENDER_DISTANCE / 2;
+		should_be_loaded &= abs(camx - chunk.first.x) < World::RENDER_DISTANCE / 2;
+		should_be_loaded &= abs(camy - chunk.first.y) < World::RENDER_DISTANCE / 2;
+		should_be_loaded &= abs(camz - chunk.first.z) < World::RENDER_DISTANCE / 2;
 
 		if (!should_be_loaded) {
-			world->chunks_to_unload.push_back(glm::vec3(x, y, z));
+			world->chunks_to_unload.push_back(glm::vec3(camx, camy, camz));
 		}
 
 	}
