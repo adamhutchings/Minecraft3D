@@ -35,7 +35,7 @@ void chunk_queue_update_function(World* world) {
 				auto chunkpos = glm::vec3(worldx + x, worldy + y, worldz + z);
 				
 				// If this chunk is not in the list of loaded chunks, add to queue
-				if ( world->loaded_chunks.find(chunkpos) == world->loaded_chunks.end() ) {
+				if ( world->loaded_chunks.count(chunkpos) == 0 ) {
 					world->chunks_to_load.push_back(chunkpos);
 				}
 
@@ -99,7 +99,7 @@ Chunk* World::get_chunk_at(int x, int y, int z) {
 	cc_x = x, cc_y = y, cc_z = z;
 	cached_chunk_exists = true;
 
-	if (loaded_chunks.find(vec) != loaded_chunks.end()) {
+	if (loaded_chunks.count(vec) > 0) {
 		cached_chunk = loaded_chunks[vec];
 	} else {
 		cached_chunk = nullptr;
@@ -186,7 +186,7 @@ bool World::unload_chunk(int x, int y, int z) {
 	if (chunk == nullptr) return false;
 
 	// Check if the chunk is already unloaded.
-	if (unloaded_chunks.find(vec) != unloaded_chunks.end()) {
+	if (unloaded_chunks.count(vec) > 0) {
 		delete unloaded_chunks[vec];
 	}
 
@@ -213,7 +213,7 @@ bool World::load_chunk(glm::vec3 vec) {
 		return false;
 	}
 
-	if (unloaded_chunks.find(vec) == unloaded_chunks.end()) {
+	if (unloaded_chunks.count(vec) == 0) {
 		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
 	} else {
 		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
