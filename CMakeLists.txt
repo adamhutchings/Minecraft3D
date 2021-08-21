@@ -15,7 +15,7 @@ include_directories(${OPENGL_INCLUDE_DIR})
 file(GLOB_RECURSE SOURCES src/*.cpp src/glad/glad.c)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(CMAKE_CXX_FLAGS "-framework OpenGL -Wall -Wno-unused-command-line-argument")
+    set(CMAKE_CXX_FLAGS "-framework OpenGL -Wall -Wno-unused-command-line-argument -g")
 else()
     find_package(OpenGL REQUIRED)
 endif()
