@@ -20,6 +20,7 @@ private:
 	glm::vec3 location;
 
 public:
+
 	Camera();
 	// Change the pitch
 	void pitch(float angle, ViewMode mode);
@@ -33,5 +34,9 @@ public:
 	// Find the location of the first solid block to break.
 	// Returns false if no block was found.
 	bool get_block_break_location(int& x, int& y, int& z);
+
+	inline int x() { return location.x; }
+	inline int y() { return location.y; }
+	inline int z() { return location.z; }
 
 };

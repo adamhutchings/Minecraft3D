@@ -36,6 +36,7 @@ inline Texture get_texture(BlockType type, Side side) {
 		case STONE_BLOCK:
 			return STONE_TEXTURE;
 	}
+	return INVALID_TEXTURE;
 }
 
 }

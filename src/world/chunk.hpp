@@ -21,7 +21,6 @@ class CachedChunk;
 class Chunk {
 
 private:
-	int cx, cy, cz;
 	// All of the blocks in the mesh
 	std::array<BlockType, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE> blocks;
 	// The mesh of all of the blocks
@@ -31,9 +30,11 @@ private:
 public:
 	Chunk() = default;
 	// Read this chunk from a cache
-	Chunk(int x, int y, int z, CachedChunk&);
+	Chunk(CachedChunk*);
 	Chunk(int x, int y, int z, WorldGenerator generator);
-	void update_mesh(World* world); // only do this when the blocks in the chunk are changed
+	// only do this when the blocks in the chunk are changed
+	// cx, cy, cz are chunk coordinates
+	void update_mesh(World* world, int cx, int cy, int cz);
 	BlockType& at(int x, int y, int z);
 	void render();
 
