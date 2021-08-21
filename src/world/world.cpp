@@ -216,7 +216,8 @@ bool World::load_chunk(glm::vec3 vec) {
 	if (unloaded_chunks.count(vec) == 0) {
 		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
 	} else {
-		loaded_chunks[vec] = new Chunk(unloaded_chunks[vec]);
+		loaded_chunks[vec] = new Chunk();
+		unloaded_chunks[vec]->read(loaded_chunks[vec]);
 		delete unloaded_chunks[vec];
 		unloaded_chunks.erase(vec);
 	}
