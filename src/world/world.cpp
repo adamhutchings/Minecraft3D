@@ -256,3 +256,24 @@ void World::load_unload_one() {
 	chunk_list_update_state = ChunkQueueUpdateState::S_FREE;
 
 }
+
+#include <iostream>
+
+void World::generate_trees() {
+
+	for (auto cp : loaded_chunks) {
+		// Check if chunks on all sides are loaded.
+		// This doesn't matter for trees, but it will in the future.
+		if (
+			this->get_chunk_at(cp.first.x + 1, cp.first.y, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x - 1, cp.first.y, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y + 1, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y - 1, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y, cp.first.z + 1) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y, cp.first.z - 1) != nullptr
+		) {
+			cp.second->generate_trees(this, cp.first);
+		}
+	}
+
+}

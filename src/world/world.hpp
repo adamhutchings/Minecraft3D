@@ -84,6 +84,8 @@ public:
 	void render();
 	// Load one chunk and unload one chunk
 	void load_unload_one();
+	// Check if chunks can generate trees - if any can & need, do so.
+	void generate_trees();
 
 friend void chunk_queue_update_function(World* world);
 
