@@ -158,7 +158,7 @@ void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
 
                         float grass_flag = 0.0f;
                         // TO IMPROVE - getting the texture for each face
-                        if (tex == GRASS_TOP_TEXTURE) {
+                        if (tex == GRASS_TOP_TEXTURE || tex == OAK_LEAVES_TEXTURE) {
                             grass_flag = 2.0f;
                         } else if (tex == GRASS_SIDE_TEXTURE) {
                             grass_flag = 1.0f;
