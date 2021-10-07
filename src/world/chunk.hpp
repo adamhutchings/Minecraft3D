@@ -47,5 +47,6 @@ public:
 	void generate_trees(World* world, glm::vec3 chunk_loc);
 
 friend class CachedChunk;
+friend class World;
 
 };

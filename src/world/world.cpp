@@ -152,7 +152,8 @@ void World::render() {
 			);
 			cp.second->updated_since_last_frame = false;
 		}
-		cp.second->render();
+		if (cp.second->trees_generated_already)
+			cp.second->render();
 	}
 
 }
