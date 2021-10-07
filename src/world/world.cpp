@@ -53,7 +53,7 @@ void chunk_queue_update_function(World* world) {
 		should_be_loaded &= abs(camz - chunk.first.z) < World::RENDER_DISTANCE / 2;
 
 		if (!should_be_loaded) {
-			world->chunks_to_unload.push_back(glm::vec3(camx, camy, camz));
+			world->chunks_to_unload.push_back(chunk.first);
 		}
 
 	}
