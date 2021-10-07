@@ -30,6 +30,8 @@ CachedChunk::CachedChunk(Chunk* chunk)
 	// These cached chunks can't be wasting memory.
 	data.shrink_to_fit();
 
+	this->chunk_trees_loaded = chunk->trees_generated_already;
+
 }
 
 void CachedChunk::read(Chunk* into) {
@@ -43,5 +45,7 @@ void CachedChunk::read(Chunk* into) {
 		}
 
 	}
+
+	into->trees_generated_already = this->chunk_trees_loaded;
 
 }
