@@ -75,6 +75,10 @@ private:
 
 	void update_neighboring_chunks(glm::vec3 vec);
 
+	// If a chunk generation tries to place blocks that don't exist yet, place
+	// them here, so new chunks generating there don't erase the data.
+	std::unordered_map<glm::vec3, BlockType, Vec3KeyUtils, Vec3KeyUtils> bad_places;
+
 public:
 	World();
 	void shutdown_update_thread();
@@ -88,5 +92,6 @@ public:
 	void generate_trees();
 
 friend void chunk_queue_update_function(World* world);
+friend class Chunk;
 
 };

@@ -67,16 +67,23 @@ std::vector<float> get_face_vertices(
 
 }
 
-Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
+Chunk::Chunk(int x, int y, int z, WorldGenerator generator, World* world) {
 
 	for (int i = 0; i < CHUNK_SIZE; ++i) {
 		for (int j = 0; j < CHUNK_SIZE; ++j) {
 			for (int k = 0; k < CHUNK_SIZE; ++k) {
+                int xp = x * CHUNK_SIZE + i,
+                    yp = y * CHUNK_SIZE + j,
+                    zp = z * CHUNK_SIZE + k;
 				this->at(i, j, k) = generator.get_block_at(
-                    x * CHUNK_SIZE + i,
-                    y * CHUNK_SIZE + j,
-                    z * CHUNK_SIZE + k
+                    xp, yp, zp
                 );
+                // Check world list for bad places
+                auto vec_check = glm::vec3(xp, yp, zp);
+                if (world->bad_places.count(vec_check) > 0) {
+                    this->at(i, j, k) = world->bad_places[vec_check];
+                    world->bad_places.erase(vec_check);
+                }
 			}
 		}
 	}

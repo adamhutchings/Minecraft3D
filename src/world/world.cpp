@@ -135,6 +135,8 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 			((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
 		) = block;
 		chunk->updated_since_last_frame = true;
+	} else {
+		this->bad_places[glm::vec3(x, y, z)] = block;
 	}
 
 	return chunk != nullptr;
@@ -219,7 +221,7 @@ bool World::load_chunk(glm::vec3 vec) {
 	}
 
 	if (unloaded_chunks.count(vec) == 0) {
-		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
+		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator, this);
 	} else {
 		loaded_chunks[vec] = new Chunk();
 		unloaded_chunks[vec]->read(loaded_chunks[vec]);
