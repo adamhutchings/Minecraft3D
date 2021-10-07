@@ -1,7 +1,9 @@
 #include "chunk.hpp"
 
+#include <random>
 #include <vector>
 
+#include <world/gen/gen_tree.hpp>
 #include <world/save/chunk_cache.hpp>
 #include <world/world.hpp>
 
@@ -195,4 +197,30 @@ void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
 void Chunk::render() {
     if (chunk_mesh != nullptr)
 	    chunk_mesh->draw();
+}
+
+void Chunk::generate_trees(World* world, glm::vec3 chunk_loc) {
+    if (this->trees_generated_already) return;
+    for (int i = 0; i < CHUNK_SIZE; ++i) {
+        for (int k = 0; k < CHUNK_SIZE; ++k) {
+            // Check all blocks to try to generate trees.
+            // But looking for the place where a tree is is costly, so do
+            // random chance first.
+            if (std::rand() % OAK_TREE_RARITY == 0) {
+                // Now, we iterate starting at the top to find the first grass
+                // block.
+                for (int j = CHUNK_SIZE - 1; j >= 0; --j) {
+                    if (this->at(i, j, k) == GRASS_BLOCK) {
+                        // We found a grass block, so we can generate a tree.
+                        place_tree(world, glm::vec3(
+                            chunk_loc.x * CHUNK_SIZE + i,
+                            chunk_loc.y * CHUNK_SIZE + j,
+                            chunk_loc.z * CHUNK_SIZE + k
+                        ));
+                    }
+                }
+            }   
+        }
+    }
+    trees_generated_already = true;
 }

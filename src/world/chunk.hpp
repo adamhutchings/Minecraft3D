@@ -7,6 +7,8 @@
 #include <array>
 #include <memory>
 
+#include <glm/glm.hpp>
+
 #include <graphics/mesh.hpp>
 #include <world/blocks.hpp>
 #include <world/gen/generator.hpp>
@@ -26,6 +28,7 @@ private:
 	// The mesh of all of the blocks
 	std::unique_ptr<Mesh> chunk_mesh;
 	bool block_borders_air(int i, int j, int k, Side side, World* world);
+	bool trees_generated_already = false;
 
 public:
 	Chunk() = default;
@@ -37,6 +40,8 @@ public:
 	void update_mesh(World* world, int cx, int cy, int cz);
 	BlockType& at(int x, int y, int z);
 	void render();
+	// Generate all trees. Fail if trees have been generated already.
+	void generate_trees(World* world, glm::vec3 chunk_loc);
 
 friend class CachedChunk;
 
