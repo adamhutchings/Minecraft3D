@@ -134,11 +134,7 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 			((y < 0) * 16 + y % CHUNK_SIZE) % CHUNK_SIZE,
 			((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
 		) = block;
-		chunk->update_mesh(this,
-			std::floor( (float) x / CHUNK_SIZE ),
-			std::floor( (float) y / CHUNK_SIZE ),
-			std::floor( (float) z / CHUNK_SIZE )
-		);
+		chunk->updated_since_last_frame = true;
 	}
 
 	return chunk != nullptr;
@@ -148,6 +144,14 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 void World::render() {
 	
 	for (auto cp : loaded_chunks) {
+		if (cp.second->updated_since_last_frame) {
+			cp.second->update_mesh(this,
+				cp.first.x,
+				cp.first.y,
+				cp.first.z
+			);
+			cp.second->updated_since_last_frame = false;
+		}
 		cp.second->render();
 	}
 

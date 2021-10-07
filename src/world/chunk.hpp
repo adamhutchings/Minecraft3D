@@ -31,6 +31,9 @@ private:
 	bool trees_generated_already = false;
 
 public:
+	// Not needed to be cached - let's actually not update the mesh whenever a
+	// block is placed, but only if we need to when the frame is refreshed.
+	bool updated_since_last_frame = false;
 	Chunk() = default;
 	// Read this chunk from a cache
 	Chunk(CachedChunk*);
