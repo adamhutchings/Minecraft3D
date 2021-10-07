@@ -12,6 +12,9 @@ enum Texture {
 	STONE_TEXTURE                = 241,
 	GRASS_SIDE_TEXTURE           = 243,
 	INVALID_TEXTURE              = 19,
+	OAK_WOOD_INNER_TEXTURE       = 229,
+	OAK_WOOD_SIDE_TEXTURE        = 228,
+	OAK_LEAVES_TEXTURE           = 197,
 };
 
 namespace tex {
