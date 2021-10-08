@@ -13,6 +13,8 @@ enum BlockType {
 	GRASS_BLOCK,
 	DIRT_BLOCK,
 	STONE_BLOCK,
+	OAK_WOOD,
+	OAK_LEAVES,
 
 };
 
@@ -35,6 +37,16 @@ inline Texture get_texture(BlockType type, Side side) {
 			return DIRT_TEXTURE;
 		case STONE_BLOCK:
 			return STONE_TEXTURE;
+		case OAK_WOOD:
+			switch (side) {
+				case UP:
+				case DOWN:
+					return OAK_WOOD_INNER_TEXTURE;
+				default:
+					return OAK_WOOD_SIDE_TEXTURE;
+			}
+		case OAK_LEAVES:
+			return OAK_LEAVES_TEXTURE;
 	}
 	return INVALID_TEXTURE;
 }

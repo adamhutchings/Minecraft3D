@@ -24,6 +24,7 @@ private:
 		int, // the number of blocks
 		BlockType // the block type
 	> > data;
+	bool chunk_trees_loaded;
 
 public:
 

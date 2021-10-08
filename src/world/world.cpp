@@ -53,7 +53,7 @@ void chunk_queue_update_function(World* world) {
 		should_be_loaded &= abs(camz - chunk.first.z) < World::RENDER_DISTANCE / 2;
 
 		if (!should_be_loaded) {
-			world->chunks_to_unload.push_back(glm::vec3(camx, camy, camz));
+			world->chunks_to_unload.push_back(chunk.first);
 		}
 
 	}
@@ -134,11 +134,9 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 			((y < 0) * 16 + y % CHUNK_SIZE) % CHUNK_SIZE,
 			((z < 0) * 16 + z % CHUNK_SIZE) % CHUNK_SIZE
 		) = block;
-		chunk->update_mesh(this,
-			std::floor( (float) x / CHUNK_SIZE ),
-			std::floor( (float) y / CHUNK_SIZE ),
-			std::floor( (float) z / CHUNK_SIZE )
-		);
+		chunk->updated_since_last_frame = true;
+	} else {
+		this->bad_places[glm::vec3(x, y, z)] = block;
 	}
 
 	return chunk != nullptr;
@@ -148,7 +146,16 @@ bool World::set_block_at(int x, int y, int z, BlockType block) {
 void World::render() {
 	
 	for (auto cp : loaded_chunks) {
-		cp.second->render();
+		if (cp.second->updated_since_last_frame) {
+			cp.second->update_mesh(this,
+				cp.first.x,
+				cp.first.y,
+				cp.first.z
+			);
+			cp.second->updated_since_last_frame = false;
+		}
+		if (cp.second->trees_generated_already)
+			cp.second->render();
 	}
 
 }
@@ -214,7 +221,7 @@ bool World::load_chunk(glm::vec3 vec) {
 	}
 
 	if (unloaded_chunks.count(vec) == 0) {
-		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator);
+		loaded_chunks[vec] = new Chunk(vec.x, vec.y, vec.z, generator, this);
 	} else {
 		loaded_chunks[vec] = new Chunk();
 		unloaded_chunks[vec]->read(loaded_chunks[vec]);
@@ -254,5 +261,26 @@ void World::load_unload_one() {
 	}
 
 	chunk_list_update_state = ChunkQueueUpdateState::S_FREE;
+
+}
+
+#include <iostream>
+
+void World::generate_trees() {
+
+	for (auto cp : loaded_chunks) {
+		// Check if chunks on all sides are loaded.
+		// This doesn't matter for trees, but it will in the future.
+		if (
+			this->get_chunk_at(cp.first.x + 1, cp.first.y, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x - 1, cp.first.y, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y + 1, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y - 1, cp.first.z) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y, cp.first.z + 1) != nullptr &&
+			this->get_chunk_at(cp.first.x, cp.first.y, cp.first.z - 1) != nullptr
+		) {
+			cp.second->generate_trees(this, cp.first);
+		}
+	}
 
 }

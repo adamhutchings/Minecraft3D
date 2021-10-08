@@ -1,6 +1,7 @@
 #include "application.hpp"
 
 #include <chrono>
+#include <random>
 #include <thread>
 
 #include <graphics/camera.hpp>
@@ -59,6 +60,8 @@ void Application::init_context(int major, int minor) {
 
 void Application::mainloop() {
 
+	std::srand(time(NULL));
+
 	while ( (!glfwWindowShouldClose(wn)) && (!closing) ) {
 
 		// We want each frame to last for exactly 1/50th second,
@@ -67,6 +70,7 @@ void Application::mainloop() {
 		auto start_of_frame = std::chrono::steady_clock::now();
 
 		world->load_unload_one();
+		world->generate_trees();
 
 		input::do_movement();
 

@@ -1,7 +1,9 @@
 #include "chunk.hpp"
 
+#include <random>
 #include <vector>
 
+#include <world/gen/gen_tree.hpp>
 #include <world/save/chunk_cache.hpp>
 #include <world/world.hpp>
 
@@ -65,16 +67,23 @@ std::vector<float> get_face_vertices(
 
 }
 
-Chunk::Chunk(int x, int y, int z, WorldGenerator generator) {
+Chunk::Chunk(int x, int y, int z, WorldGenerator generator, World* world) {
 
 	for (int i = 0; i < CHUNK_SIZE; ++i) {
 		for (int j = 0; j < CHUNK_SIZE; ++j) {
 			for (int k = 0; k < CHUNK_SIZE; ++k) {
+                int xp = x * CHUNK_SIZE + i,
+                    yp = y * CHUNK_SIZE + j,
+                    zp = z * CHUNK_SIZE + k;
 				this->at(i, j, k) = generator.get_block_at(
-                    x * CHUNK_SIZE + i,
-                    y * CHUNK_SIZE + j,
-                    z * CHUNK_SIZE + k
+                    xp, yp, zp
                 );
+                // Check world list for bad places
+                auto vec_check = glm::vec3(xp, yp, zp);
+                if (world->bad_places.count(vec_check) > 0) {
+                    this->at(i, j, k) = world->bad_places[vec_check];
+                    world->bad_places.erase(vec_check);
+                }
 			}
 		}
 	}
@@ -156,7 +165,7 @@ void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
 
                         float grass_flag = 0.0f;
                         // TO IMPROVE - getting the texture for each face
-                        if (tex == GRASS_TOP_TEXTURE) {
+                        if (tex == GRASS_TOP_TEXTURE || tex == OAK_LEAVES_TEXTURE) {
                             grass_flag = 2.0f;
                         } else if (tex == GRASS_SIDE_TEXTURE) {
                             grass_flag = 1.0f;
@@ -195,4 +204,30 @@ void Chunk::update_mesh(World* world, int cx, int cy, int cz) {
 void Chunk::render() {
     if (chunk_mesh != nullptr)
 	    chunk_mesh->draw();
+}
+
+void Chunk::generate_trees(World* world, glm::vec3 chunk_loc) {
+    if (this->trees_generated_already) return;
+    for (int i = 0; i < CHUNK_SIZE; ++i) {
+        for (int k = 0; k < CHUNK_SIZE; ++k) {
+            // Check all blocks to try to generate trees.
+            // But looking for the place where a tree is is costly, so do
+            // random chance first.
+            if (std::rand() % OAK_TREE_RARITY == 0) {
+                // Now, we iterate starting at the top to find the first grass
+                // block.
+                for (int j = CHUNK_SIZE - 1; j >= 0; --j) {
+                    if (this->at(i, j, k) == GRASS_BLOCK) {
+                        // We found a grass block, so we can generate a tree.
+                        place_tree(world, glm::vec3(
+                            chunk_loc.x * CHUNK_SIZE + i,
+                            chunk_loc.y * CHUNK_SIZE + j,
+                            chunk_loc.z * CHUNK_SIZE + k
+                        ));
+                    }
+                }
+            }   
+        }
+    }
+    trees_generated_already = true;
 }
